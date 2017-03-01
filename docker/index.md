@@ -63,3 +63,16 @@ docker run [옵션] <이미지명>[:태그명] [값]
 ~~~
 
 >ex: docker run -it --name=centos centos /bin/bash
+
+### 컨테이너 삭제
+~~~
+docker rm [옵션] <컨테이너명 또는 ID>
+~~~
+
+### 컨테이너 시작
+
+### 컨테이너 재시작
+
+### export vs Save
+
+### 레이어, 이전 레이어로 돌아가기

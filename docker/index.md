@@ -62,7 +62,7 @@ docker rmi [옵션] <이미지명>
 docker run [옵션] <이미지명>[:태그명] [값]
 ~~~
 
->ex: docker run -it --name=centos centos /bin/bash
+> ex: docker run -it --name=centos centos /bin/bash
 
 ### 컨테이너 삭제
 ~~~

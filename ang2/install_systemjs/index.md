@@ -161,13 +161,46 @@ express 에서 설정한 static한 path만 붙여주면 된다.
 
 <br>
 #### 테스트
-> 소스코드는 조망간 업로드 하겠습니다.
 
-QuickStart index.html, component 다운....
+QuickStart의 [index.html](https://github.com/angular/quickstart/blob/master/src/index.html) 템프릿은 `view` 폴더에 복사하고 리소스 Path만 express 에서 설정한 static 주소로 변경 해준다.
 
-express에 Request URL 을 추가한다.
+~~~
+// index.html
+// 변경전
+<script src="node_modules/.....
+
+// 변경후
+<script src="/static/js/node_modules/.....
+~~~
+
+ [main.ts](https://github.com/angular/quickstart/blob/master/src/main.ts)는 `/public/js` 폴더에, 그리고 `App` 폴더를 생성해서 `/publicjs/app` 폴더에는 [app.module.ts](https://github.com/angular/quickstart/blob/master/src/app/app.module.ts), [app.component.ts](https://github.com/angular/quickstart/blob/master/src/app/app.component.ts)를 복사한다.
+
+ ~~~
+ test_project/
+ ├── node_modules/           # express 패키지
+ ├── public/                 # static 파일
+ │   ├── js/
+ │   │   ├── node_modules/   # angular2 패키지
+ │   │   ├── app/
+ │   │   │   ├── app.component.ts   # 컴포넌트 파일
+ │   │   │   └── app.module.ts      # 모듈 파일
+ │   │   ├── main.ts        # angular2 main 파일
+ │   │   ├── package.json    
+ │   │   ├── systemjs.config.js  # systemjs 설정 파일
+ │   │   └── tsconfig.json       # typescript 컴파일 설정 파일
+ │   └── css/
+ ├── view/
+ │   └── index.html         # 템플릿 파일
+ ├── app.js
+ └── package.json
+ ~~~
+
+마지막으로, express의 `app.js`에 Request URL 을 추가한다.
 ~~~
 app.get('/ang', function(req, res){
     res.sendFile(path.join(__dirname, "/view/", "index.html"));
 });
 ~~~
+이제 브라우저에서 `http://localhost/ang` 로 접속해 본다.
+
+<b>끗.</b>

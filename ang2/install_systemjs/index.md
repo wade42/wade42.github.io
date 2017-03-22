@@ -27,7 +27,6 @@ QuickStart 클론을 하여 `devDependencies`까지 설치할 경우, `lite-serv
 6. angular2 설정
 7. 테스트
 
-## Getting start
 #### express 프로젝트 생성 및 설정
 아무 프로젝트 이름의 폴더를 하나 생성 해서 그 안에서 npm을 이용하여 express 패키지를 생성한다.
 ~~~

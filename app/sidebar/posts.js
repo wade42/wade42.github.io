@@ -5,7 +5,8 @@ exports.POSTS = [
         topic: "Angular2",
         contents: [
             { subtopic: "설치 - systemjs", path: 'https://wade42.github.io/md/angular2/install_systemjs.md' },
-            { subtopic: "컴포넌트 - 기본", path: 'https://wade42.github.io/md/angular2/component_basic.md' }
+            { subtopic: "컴포넌트 - 기본", path: 'https://wade42.github.io/md/angular2/component_basic.md' },
+            { subtopic: "불변 데이터 - Angular & React", path: 'https://wade42.github.io/md/angular2/immutable.md' }
         ]
     },
     {

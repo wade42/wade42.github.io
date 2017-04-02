@@ -23,7 +23,6 @@ var SideBarComponent = (function () {
     }
     SideBarComponent.prototype.actived = function () {
         this.active = !this.active;
-        console.dir(this.active);
     };
     SideBarComponent.prototype.getMd = function (event) {
         var _this = this;

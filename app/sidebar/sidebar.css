@@ -5,7 +5,7 @@
 .absol{ position: absolute;; }
 
 .sidebar_wrap{ width: 100%; height: 100%; margin-top: -50px; position:absolute; }
-.sidebar{ width: 100%; height: 100%; position:absolute; background: rgba(0, 0, 0, 0.6); left: -100%; transition: transform 400ms ease; z-index: 1; color: white; }
+.sidebar{ width: 100%; height: 100%; position:absolute; background: rgba(0, 0, 0, 0.8); left: -100%; transition: transform 400ms ease; z-index: 1; color: #00EB4E; }
 
 .list_wrap{ margin-top: 70px; }
 

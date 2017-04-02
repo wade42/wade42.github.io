@@ -38,13 +38,14 @@ var SideBarComponent = (function () {
 SideBarComponent = __decorate([
     core_1.Component({
         selector: 'sidebar',
-        templateUrl: '/static/js/app/sidebar/sidebar.html',
-        styleUrls: ['static/js/app/sidebar/sidebar.css'],
+        templateUrl: '/app/sidebar/sidebar.html',
+        styleUrls: ['app/sidebar/sidebar.css'],
         changeDetection: core_1.ChangeDetectionStrategy.OnPush,
         encapsulation: core_1.ViewEncapsulation.Native,
         providers: [sidebar_service_1.SideBarService]
     }),
-    __metadata("design:paramtypes", [core_1.ChangeDetectorRef, sidebar_service_1.SideBarService])
+    __metadata("design:paramtypes", [typeof (_a = typeof core_1.ChangeDetectorRef !== "undefined" && core_1.ChangeDetectorRef) === "function" && _a || Object, sidebar_service_1.SideBarService])
 ], SideBarComponent);
 exports.SideBarComponent = SideBarComponent;
+var _a;
 //# sourceMappingURL=sidebar.component.js.map

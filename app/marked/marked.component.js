@@ -23,7 +23,7 @@ MarkedComponent = __decorate([
     core_1.Component({
         selector: 'marked',
         template: "<div class=\"mark_body\" [innerHTML]=\"content\"></div>",
-        styleUrls: ['static/js/app/marked/marked.css'],
+        styleUrls: ['app/marked/marked.css'],
         changeDetection: core_1.ChangeDetectionStrategy.OnPush,
         encapsulation: core_1.ViewEncapsulation.Native,
     }),

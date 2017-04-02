@@ -13,5 +13,6 @@
 
 li{ margin-left: 20px; list-style-type: none; }
 li:before{ content: "└"; }
+li:hover{ cursor: pointer; }
 
 submark{ }

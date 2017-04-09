@@ -29,10 +29,12 @@ console.log(list === list.slice().reverse()) // false
 
 
 </br>
+
 ## Angular2 & React
 데이터의 변화를 빠르게 감지해서 DOM에 반영하기위해 Angaulr와 React도 불변 데이터 구조를 이용한다.
 
 </br>
+
 ## Angular2 - Change Detection
 Angular2에서 컨포넌트는 `변경감지(Change Detection)`를 통해서 컴포넌트 프로퍼티의 변경을 감지하고 DOM에 반영을 한다. 그리고 컴포넌트들은 `트리`로 관리 된다. 때문에 `변경감지(Change Detection)`는 루트 컴포넌트 부터 위에서 아래로 실행된다.
 
@@ -93,6 +95,7 @@ observable.subscribe(
 ~~~
 
 </br>
+
 ## React - setUpdate
 React에서 화며을 업데이트 하는 과정을 살펴 보면 Angular와 흡사하다. 과정을 살펴보면 </br>
 먼저 리엑트 컴포넌트의 프로퍼티를 변경을 하고 `setState` 메소드를 통해 state가 바뀌면 다음 메소드 들을 차례로 실행 한다.

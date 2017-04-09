@@ -117,6 +117,7 @@ shouldComponentUpdate(nextProps, nextState)
 
 
 </br>
+
 ## 불변 객체와 성능
 매번 객체를 clone으로 복사하는 것으로 생각하는데 사실은 그것이 아니다. 내부 데이터를 복제 하지 않고 값을 변경한 체로 새로 다시 연결될 참조값만 복사하여 리턴 한다. </br>
 예를들면, 연결 리스트(Linked List)를 들 수 있다.
@@ -127,6 +128,7 @@ shouldComponentUpdate(nextProps, nextState)
 </br>
 </br>
 </br>
+
 > #### 참고
 > [Angular2 Docs](https://angular.io/docs/ts/latest/)</br>
 > [ANGULAR CHANGE DETECTION EXPLAINED](https://blog.thoughtram.io/angular/2016/02/22/angular-2-change-detection-explained.html)</br>

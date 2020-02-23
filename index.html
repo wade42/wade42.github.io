@@ -1,30 +1,100 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Wade42</title>
-    <base href="/">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- <link rel="stylesheet" href="styles.css"> -->
-    <style>
-        html, body{
-            margin: 0;
-            padding: 0;
-        }
-    </style>
-    <!-- Polyfill(s) for older browsers -->
-    <script src="/core/core-js/client/shim.min.js"></script>
+﻿<!DOCTYPE html>
+<html lang="ko"> 
+<head> 
+<meta charset="utf-8"> 
+<title>Index</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<link rel="stylesheet" type="text/css" href="/css/theme1.css" />
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+<!-- skip nav -->
+<ul id="skip">
+<li><a href="#aside" tabindex="0">메뉴 바로가기</a></li>
+<li><a href="#content">본문 바로가기</a></li>
+</ul>
+<!-- //skip nav -->
+<div id="wrap">
+	<!-- header -->
+	<div class="wrapAside">
+		<!-- <h1>Side</h1> -->
+		<div id="aside" class="aside">
+			<div class="menuBar">
+				<button type="button" class="buttonMenu" aria-label="메뉴 버튼">
+					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="butt" stroke-linejoin="arcs"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+				</button>
+				<div class="wrapInput">
+					<form id="searchForm">
+						<fieldset>
+							<legend>검색</legend>
+							<label for="inputSearch" class="blind">
+								검색어를 입력하세요.
+							</label>
+							<input id="inputSearch" type="text" class="inputText" title="검색어를 입력하세요"/>
+						</fieldset>
+					</form>
+				</div>
+				<button type="button" class="buttonSearch" aria-button="검색 버튼">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="butt" stroke-linejoin="arcs"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+				</button>
+			</div>
+			<div class="wrapListMenu">
+				<ul class="listMenu">
+					<li class="menu">
+						<a href="#" class="link ellip">
+							Menu
+							<span class="count">20</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="#" class="link ellip on">
+							MenuMenuMenuMenuMenuMenuMenuMenuMenuMenu
+							<span class="count">232</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="#" class="link ellip new">
+							Menu
+							<span class="count">20</span>
+						</a>
+						<ul class="listSubMenu">
+							<li class="subMenu">
+								<a href="#" class="link ellip">
+									Sub Menu
+									<span class="count">20</span>
+								</a>
+							</li>
+							<li class="subMenu">
+								<a href="#" class="link ellip new">
+									Sub Menu
+									<span class="count">100</span>
+								</a>
+							</li>
+							<li class="subMenu">
+								<a href="#" class="link ellip on">
+									Sub MenuSub MenuSub MenuSub MenuSub MenuSub MenuSub Menu
+									<span class="count">999</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- //header -->
+	
+	<!-- content -->
+	<div id="content" class="wrapContent">
+		<a href="#">Content</a>
+	</div>
+	<!-- //content -->
+	
+	<!-- footer -->
+	<div id="footer">
+	</div>
+	<!-- //footer -->
+</div>
 
-    <script src="/core/zone.js/dist/zone.js"></script>
-    <script src="/core/systemjs/dist/system.src.js"></script>
-
-    <script src="systemjs.config.js"></script>
-    <script>
-      System.import('main.js').catch(function(err){ console.error(err); });
-    </script>
-  </head>
-
-  <body>
-    <app>로딩중...</app>
-  </body>
+</body>
 </html>

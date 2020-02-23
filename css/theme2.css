@@ -1,0 +1,45 @@
+﻿@charset "utf-8";
+
+/* reset */
+*{margin:0; padding:0;}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,fieldset,legend,textarea,p,th,td,input,select,textarea,button{margin:0;padding:0}
+html,body{width:100%;height:100%}
+body{font-family:'돋움',dotum,tahoma,sans-serif;font-size:12px;color:#000;}
+fieldset,img{border:0 none;vertical-align:top}
+dl,ul,ol,menu,li{list-style:none}
+button{overflow:visible;border:0 none;background-color:transparent;cursor:pointer}
+button::-moz-focus-inner{padding:0;border:0} 
+address,caption,em{font-style:normal}
+a{color:#0075da;text-decoration:none}
+a:focus,a:active,a:hover{color:#0075da;text-decoration:none}
+table{border-collapse:collapse;border-spacing:0;}
+
+/* common */
+.blind,legend{overflow:hidden;position:absolute;top:0;left:0;width:1px;height:1px;font-size:0;line-height:100px;white-space:nowrap}
+#skip{height:0}
+#skip a{display:block;position:absolute;left:0;top:-100px;width:100%;height:1px;text-align:center}
+#skip a:focus,#skip a:active{position:absolute;top:0;z-index:120;height:25px;padding:10px 0;background:#fff;font-weight:bold;color:#000;font-size:20px;text-decoration:none}
+.ellip {overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+
+/* layout */
+#wrap {height:100%; background:#fff;}
+.wrapAside {position:fixed; display:inline-block; top:0; left:0; width:260px; height:100%; background:#fff; border-right:1px solid #ddd;}
+.wrapContent {box-sizing:border-box; width:100%; height:100%; padding:15px 15px 15px 275px;}
+.wrapListMenu {position:absolute; top:73px; left:0; overflow-y:auto; width: 260px; max-height:100%;}
+
+/* aside */
+.menuBar {padding:20px 15px; background-color:#f8f8f8; border-bottom:1px solid #ddd;}
+.menuBar:after {content:''; display:block; clear:both;}
+.buttonMenu {float:left; margin-right:15px;}
+.buttonMenu svg {stroke:#333;}
+.buttonSearch {float:right; margin-top:5px;}
+.buttonSearch svg {stroke:#333;}
+.wrapInput {float:left; width: 145px; border-bottom:1px solid #ddd;}
+.inputText {width:100%; height:25px; font-size:15px; line-height:25px; color:#ddd; font-weight:500; background: none; border:none;}
+.listMenu {padding:15px 0;}
+.link {position:relative; display:block; box-sizing:border-box; width:100%; height:40px; padding:5px 65px 5px 15px; font-size:15px; line-height:28px; color:#ddd; font-weight:500;}
+.listSubMenu .link {padding-left: 25px;}
+.link.on {color:#333;}
+.link.on:after {content:''; position: absolute; top:18px; right:50px; width:5px; height:5px; background:orange; border-radius:50%;}
+.link.new:after {content:''; position: absolute; top:18px; right:50px; width:5px; height:5px; background:#e91e63; border-radius:50%;}
+.count {position: absolute; top: 5px; right: 15px;}

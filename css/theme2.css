@@ -38,9 +38,24 @@ table{border-collapse:collapse;border-spacing:0;}
 .wrapInput {float:left; width: 145px; border-bottom:1px solid #ddd;}
 .inputText {width:100%; height:25px; font-size:15px; line-height:25px; color:#ddd; font-weight:500; background: none; border:none;}
 .listMenu {padding:15px 0;}
-.link {position:relative; display:block; box-sizing:border-box; width:100%; height:40px; padding:5px 65px 5px 15px; font-size:15px; line-height:28px; color:#ddd; font-weight:500;}
+.link {position:relative; display:block; box-sizing:border-box; width:100%; height:40px; padding:5px 65px 5px 15px; font-size:15px; line-height:28px; color:#c5c5c5; font-weight:500;}
 .listSubMenu .link {padding-left: 25px;}
 .link.on {color:#333;}
 .link.on:after {content:''; position: absolute; top:18px; right:50px; width:5px; height:5px; background:orange; border-radius:50%;}
 .link.new:after {content:''; position: absolute; top:18px; right:50px; width:5px; height:5px; background:#e91e63; border-radius:50%;}
+.link:hover { color: #333; }
 .count {position: absolute; top: 5px; right: 15px;}
+
+/* content */
+.mdListWrap {
+    padding: 30px 40px;
+}
+
+.mdItem {
+    padding: 30px 40px;
+    font-size: 15px;
+}
+
+.mdItem:hover {
+    cursor: pointer;
+}

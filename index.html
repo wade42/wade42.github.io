@@ -21,7 +21,6 @@
 		}
 	}
 </style>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
 <!-- skip nav -->
@@ -36,7 +35,7 @@
 		<!-- <h1>Side</h1> -->
 		<div id="aside" class="aside">
 			<div class="logo">
-				WADE
+				<a href="/" class="logoLink">WADE</a>
 			</div>
 			<div class="menuBar">
 				<button type="button" class="buttonMenu" aria-label="메뉴 버튼">
@@ -60,7 +59,7 @@
 			<div class="wrapListMenu">
 				<ul class="listMenu">
 					<li class="menu">
-						<a href="#akka" class="link ellip">
+						<a href="/post/akka/" class="link ellip">
 							Akka
 							<span class="count">0</span>
 						</a>
@@ -68,34 +67,60 @@
 					<li class="menu">
 						<a href="/post/spring/" class="link ellip on">
 							Spring
+							<span class="count">6</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="/post/spring/" class="link ellip">
+							Scouter
 							<span class="count">0</span>
 						</a>
 					</li>
 					<li class="menu">
-						<a href="#" class="link ellip new">
+						<a href="/post/netflix/zuul2/" class="link ellip">
 							Netflix
-							<span class="count">0</span>
+							<span class="count"></span>
 						</a>
 						<ul class="listSubMenu">
 							<li class="subMenu">
-								<a href="#" class="link ellip">
+								<a href="/post/netflix/zuul2/" class="link ellip">
 									Zuul2
 									<span class="count">3</span>
 								</a>
 							</li>
 							<li class="subMenu">
-								<a href="#" class="link ellip new">
+								<a href="/post/netflix/Ribbon/" class="link ellip">
 									Ribbon
 									<span class="count">0</span>
 								</a>
 							</li>
 							<li class="subMenu">
-								<a href="#" class="link ellip on">
+								<a href="/post/netflix/archaius/" class="link ellip">
 									archaius
 									<span class="count">0</span>
 								</a>
 							</li>
 						</ul>
+					</li>
+					<li class="menu">
+						<a href="/post/netflix/zuul2/" class="link ellip">
+							Reactive
+							<span class="count"></span>
+						</a>
+						<ul class="listSubMenu">
+							<li class="subMenu">
+								<a href="/post/netflix/zuul2/" class="link ellip">
+									Reactor
+									<span class="count">1</span>
+								</a>
+                            </li>
+                        </ul>
+                    </li>
+					<li class="menu">
+						<a href="/post/resilience4j/" class="link ellip">
+							Resilience4j
+							<span class="count">3</span>
+						</a>
 					</li>
 				</ul>
 			</div>
@@ -105,11 +130,38 @@
 	
 	<!-- content -->
 	<div id="content" class="wrapContent">
-		main
-		<!-- <div class="mdListWrap">
-			<div class="mdItem">[WebFlux] HandlerFunction</div>
-			<div class="mdItem">[WebFlux] HandlerFunction</div>
-		</div> -->
+		<div class="mdListWrap">
+			<div class="mdItem">
+				<a href="#" class="mdLink ellip">
+					[WebFlux] CircuitBreaker 추가 (with resilience4j)
+				</a>
+			</div>
+			<div class="mdItem">
+				<a href="#" class="mdLink ellip">
+					[WebFlux] GRPC Client (blocking call) 사용시 주의해야 할점 (with Armeria)
+				</a>
+			</div>
+			<div class="mdItem">
+				<a href="#" class="mdLink ellip">
+					[WebFlux] GRPC 지원하기 (with Armeria)
+				</a>
+			</div>
+			<div class="mdItem">
+				<a href="#" class="mdLink ellip">
+					[WebFlux] RouterHandlerFunction (feat. validation)
+				</a>
+			</div>
+			<div class="mdItem">
+				<a href="#" class="mdLink ellip">
+					[WebFlux] Filter (WebFilter, HandlerFilterFunction)
+				</a>
+			</div>
+			<div class="mdItem">
+				<a href="/post/spring/webflux_start/" class="mdLink ellip">
+					[WebFlux] Router (사용기)
+				</a>
+			</div>
+		</div>
 	</div>
 	<!-- //content -->
 	

@@ -84,7 +84,7 @@
 						</a>
 						<ul class="listSubMenu">
 							<li class="subMenu">
-								<a href="/post/netflix/zuul/" class="link ellip on">
+								<a href="/post/netflix/zuul/" class="link ellip">
 									Zuul2
 									<span class="count">2</span>
 								</a>
@@ -118,7 +118,7 @@
                         </ul>
                     </li>
 					<li class="menu">
-						<a href="/post/resilience4j/" class="link ellip">
+						<a href="/post/resilience4j/" class="link ellip on">
 							Resilience4j
 							<span class="count">3</span>
 						</a>
@@ -132,21 +132,61 @@
 	<!-- content -->
 	<div id="content" class="wrapContent">
 		<div class="mdListWrap">
-			<!-- <div class="mdItem">
-				<a href="#" class="mdLink ellip">
-					[Zuul2] 응용기 (Scheduler Server, with Quartz)
-				</a>
-			</div> -->
-			<div class="mdItem">
-				<a href="#" class="mdLink ellip">
-					[Zuul2] Spring Eureka와 연동하기
-				</a>
-			</div>
-			<div class="mdItem">
-				<a href="#" class="mdLink ellip">
-					[Zuul2] 내부 구조 및 동작 (사용기)
-				</a>
-			</div>
+			<article class="markdown-body">
+
+
+<h1>CircuitBreaker 종류 (Basic, BulkHead, RateLimiter)</h1>
+<ul>
+<li><strong>CircuitBreaker</strong></li>
+<li><strong>BulkHead</strong></li>
+<li><strong>RateLimiter</strong></li>
+</ul>
+<p>크게는 3가지 종류가 있으며 사용법은 대부분 동일하다.
+제공하는 서비스나 정책에 맞게 사용하면 된다.</p>
+<h1>CircuitBreaker Basic</h1>
+<p><strong>성공</strong>과 <strong>실패</strong>를 기록하여 <strong>FailureRate</strong>을 계산한다. 이 <strong>FailureRate</strong>에 의해 <strong>State</strong>가 결정된다. 그리고 <strong>State에 따라 요청을 처리하거나 처리하지 않는다.</strong></p>
+<p>State은 기존적으로 다음과 같다.</p>
+<ul>
+<li><strong>Closed</strong></li>
+<li><strong>Open</strong></li>
+<li><strong>Half Open</strong></li>
+</ul>
+<p>기록 되는 방식 또한 2가지 <strong>설정된 시간만큼씩의 기록을 누적</strong>하여 FailureRate을 계산하는 방법과 <strong>설정된 수 만큼씩의 기록을 누적</strong>하여 FailureRate을 계산하는 방법이 있다.</p>
+<blockquote>
+<p>자세한 설명은 <a href="https://resilience4j.readme.io/docs/circuitbreaker">공식문서</a></p>
+</blockquote>
+<h1>Bulkhead</h1>
+<p>기본적인  <code>Circuitbreaker</code> 와는 달리 <code>Bulkhead</code>는 리소스 관점으로 보는게 맞다. 실패율은 중요하지 않으며
+<strong>동시 처리량</strong>에 관점을 둔다. 설정된 Threshold를 넘지 않게 하며, 어플리케이션을 다운되게 하지 않거나, 최대한 다른 동작에 영향을 주지 않게 하기 위함이다.</p>
+<p>요청이 많은 handler와 적은 handler에 각각 설정하여 영향을 최소화 시킬수 있다.</p>
+<p>설정 방법이나 내부 동작 및 구조는 기본형태와 동일 하며 <code>Permission</code>을 획득하는 방법만 조금 다르다.</p>
+<p>기본적으로 <code>Bulkhead</code>는 <code>SemaphoreBulkhead</code>이다.
+Java <strong>Semaphore</strong>를 사용(동시에 실행될 수 있는 maxCalls가 설정된다. default: 25)하며 <strong>Semaphore</strong>로 <code>tryAcquire</code> 또는 <code>release</code>를 통해 자원을 관리하게 된다.</p>
+<p>만약 자원이 없을시 다음과 같은 메시지가 출력된다.</p>
+<pre class="hljs language-java"><code>{reason=Bulkhead <span class="hljs-string">'bulkPromoBreaker'</span> is full and does not permit further calls}
+</code></pre>
+<blockquote>
+<p>ThreadPoolBulkead도 동일하다.</p>
+</blockquote>
+<h1>RateLimiter</h1>
+<p><code>RateLimiter</code>를 사용하면 <strong>초당 처리량</strong>을 제한 할 수 있다.
+정해진 시간에 정해진 건수만 처리 되도록 보장 할 수 있고, 일정 시간 뒤에 다시 초기화 되어 처리량을 유지 한다.
+지정할 수 있는 옵션은 3가지 이다.</p>
+<pre class="hljs language-java"><code>.timeoutDuration(Duration.ofSeconds(<span class="hljs-number">5</span>)) 
+<span class="hljs-comment">// permition 받을 때까지 대기하는 시간</span>
+.limitRefreshPeriod(Duration.ofSeconds(<span class="hljs-number">10</span>))
+.limitForPeriod(<span class="hljs-number">3</span>)
+</code></pre>
+<p><code>timeoutDuration</code>은 <code>LockSupport</code>을 이용하여 설정된 초동안 대기하게 한다.
+이설정을 최소로(milis 단위로) 하고</p>
+<pre class="hljs language-java"><code>.limitRefreshPeriod(Duration.ofSeconds(<span class="hljs-number">10</span>))
+.limitForPeriod(<span class="hljs-number">3</span>)
+</code></pre>
+<p>로 설정한다면 정확하게 10초 동안 먼저온 3건만 처리하고 나머지는 <strong>reject</strong> 된다.</p>
+
+
+
+            </article>
 		</div>
 	</div>
 	<!-- //content -->

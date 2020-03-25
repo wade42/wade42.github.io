@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ko"> 
+<head> 
+<meta charset="utf-8"> 
+<title>Index</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<link rel="stylesheet" type="text/css" href="./../../../../css/theme2.css" />
+<link rel="stylesheet" type="text/css" href="./../../../../css/github-markdown.css" />
+<link rel="stylesheet" type="text/css" href="./../../../../css/highlight.default.min.css">
+<style>
+	.markdown-body {
+		box-sizing: border-box;
+		min-width: 200px;
+		max-width: 980px;
+		margin: 0 auto;
+		padding: 45px;
+	}
+
+	@media (max-width: 767px) {
+		.markdown-body {
+			padding: 15px;
+		}
+	}
+</style>
+</head>
+<body>
+<!-- skip nav -->
+<ul id="skip">
+<li><a href="#aside" tabindex="0">메뉴 바로가기</a></li>
+<li><a href="#content">본문 바로가기</a></li>
+</ul>
+<!-- //skip nav -->
+<div id="wrap">
+	<!-- header -->
+	<div class="wrapAside">
+		<!-- <h1>Side</h1> -->
+		<div id="aside" class="aside">
+			<div class="logo">
+				<a href="/" class="logoLink">WADE</a>
+			</div>
+			<div class="menuBar">
+				<button type="button" class="buttonMenu" aria-label="메뉴 버튼">
+					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="butt" stroke-linejoin="arcs"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+				</button>
+				<div class="wrapInput">
+					<form id="searchForm">
+						<fieldset>
+							<legend>검색</legend>
+							<label for="inputSearch" class="blind">
+								검색어를 입력하세요.
+							</label>
+							<input id="inputSearch" type="text" class="inputText" title="검색어를 입력하세요"/>
+						</fieldset>
+					</form>
+				</div>
+				<button type="button" class="buttonSearch" aria-button="검색 버튼">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="butt" stroke-linejoin="arcs"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+				</button>
+			</div>
+			<div class="wrapListMenu">
+				<ul class="listMenu">
+					<li class="menu">
+						<a href="/post/akka/" class="link ellip">
+							Akka
+							<span class="count">0</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="/post/spring/" class="link ellip">
+							Spring
+							<span class="count">6</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="/post/spring/" class="link ellip">
+							Scouter
+							<span class="count">0</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="/post/netflix/zuul/" class="link ellip">
+							Netflix
+							<span class="count"></span>
+						</a>
+						<ul class="listSubMenu">
+							<li class="subMenu">
+								<a href="/post/netflix/zuul/" class="link ellip on">
+									Zuul2
+									<span class="count">2</span>
+								</a>
+							</li>
+							<li class="subMenu">
+								<a href="/post/netflix/Ribbon/" class="link ellip">
+									Ribbon
+									<span class="count">0</span>
+								</a>
+							</li>
+							<li class="subMenu">
+								<a href="/post/netflix/archaius/" class="link ellip">
+									archaius
+									<span class="count">0</span>
+								</a>
+							</li>
+						</ul>
+                    </li>
+                    <li class="menu">
+						<a href="/post/reactive/reactor/" class="link ellip">
+							Reactive
+							<span class="count"></span>
+						</a>
+						<ul class="listSubMenu">
+							<li class="subMenu">
+								<a href="/post/reactive/reactor/" class="link ellip">
+									Reactor
+									<span class="count">1</span>
+								</a>
+                            </li>
+                        </ul>
+                    </li>
+					<li class="menu">
+						<a href="/post/resilience4j/" class="link ellip">
+							Resilience4j
+							<span class="count">3</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- //header -->
+	
+	<!-- content -->
+	<div id="content" class="wrapContent">
+		<div class="mdListWrap">
+            <article class="markdown-body">
+
+<h1>Zuul2 내부 구조 및 동작 (사용기)</h1>
+<h3>Zuul1 vs Zuul2</h3>
+<p>사실 Spring Cloud Zuul이 사용하기에는 정말 편하다. 하지만 Zuul1은 blocking 방식이고 Http2를 지원하지 않으며 성능의 한계가 있다. Zuul2는 netty(non-blocking)를 기반으로 동작하기 때문에 성능 차이가 확연히 많이났다. 사실 다른 것들은 크게 이유가 되지 않을 수 있지만, 성능 차이와 동적 properties, filter 변경, vip별 동시성 처리 조절이 가장 컸다.</p>
+<blockquote>
+<p>참고: <a href="https://www.slideshare.net/artgon/zuuls-journey-to-nonblocking">Zuul2 개발자의 발표 자료</a></p>
+</blockquote>
+<p>처음 베타버전 일때 소스코드를 빌드를 해서 정식 버전이 나올때 까지 사용하였는데 이미 성능은 만족 스러웠다. 단지 불편한 점은 불필요한 설정들은 소스코드를 직접 찾아야 했다. 초기 정식 버전보다 지금은 성능 관련 설정들이 많아 져서 훨씬 다루기 쉬워졌다.</p>
+<p>그리고 무엇보다 API Gateway 도입함으로써 서비스들을 분리할 수 있었고 Gateway틑 통해서 신규 API와 레거시 API를 통합하고 쉽게 제거할 수 있었다. 그리고 공통 기능(인증) 및 Tracking을 위한 log key를 발급 하기 위한 용도로 도 사용하였다.</p>
+<p>주관적으로 생각보다 좋았던건, log key 발급과, 인증 기능을 각서비스서 분리 할수 있어서 좋았다.</p>
+<blockquote>
+<p>기존에는 인증 기능이 각 서버마다 사용하고 있었다. Gateway를 도입하면서 인증 Library 관련 의존도를 제거 할 수 있었고, 때문에 인증 Library로 인해서 서버를 재시작 할일은 없었다.</p>
+</blockquote>
+<p>주의해야 할 점은, 하나의 API Gateway로 많은 서비스들이 몰리게 되면 API Gateway가 상당히 커질 위험이 있으므로 적절히 분리 해야 한다. 그리고 Zuul2는 Http2를 지원 하지만 gRPC는 아직 지원하지 않는다. 또 내부적으로 사용하는 알아야할 Framework나 Library들이 많다.</p>
+<h2>Framework 구성</h2>
+<p><strong>Dependency Injection Framework</strong>는 <strong>Google Guice</strong>를 바탕으로 <strong>Netflix Govenator</strong>를 함께 사용하고</p>
+<p><strong>Network Framework</strong>는 <strong>netty</strong>,</p>
+<p><strong>LoadBalancing Library</strong>는 <strong>Netflix Ribbon</strong>,</p>
+<p><strong>Configuration Management</strong>로는 <strong>Netflix Archaius</strong>,</p>
+<p><strong>Service Discovery</strong>로 <strong>Netflix Eureka</strong>,</p>
+<p><strong>In/Out Bound Filter</strong>에는 <strong>Groovy</strong>,</p>
+<p>그리고 내부적으로 <strong>RxJava</strong> 등을 사용하고 있다.</p>
+<h2>동작 과정</h2>
+<p>Zuul1과 내부 동작은 다르겠지만 흐름은 거의 동일하다.</p>
+<p>Zuul1에서는 <code>Pre Filter</code>와 <code>Post Filter</code>였다면 Zuul2에서는 <code>Inbound Filter</code>와 <code>Outbound Filter</code>이다.</p>
+<blockquote>
+<p>zuul2의 Filter는 동적으로 반영하기 위해서 Groovy로 작성된다.</p>
+</blockquote>
+<ul>
+<li><strong>Request</strong></li>
+</ul>
+<p><code>Request</code> -&gt; <strong>Gateway Server</strong> -&gt; <strong>Inbound Filter</strong> -&gt; <strong>Origin Server</strong></p>
+<ul>
+<li><strong>Response</strong></li>
+</ul>
+<p><strong>Origin Server</strong> -&gt; <strong>Gatway Server</strong> -&gt; <strong>Outbound Filter</strong> -&gt; <code>Response</code></p>
+<p>Gateway로 요청이 도착하면 정해진 Inbound Filter들을 실행 되고 Origin Sever로 요청을 전달한다. 그리고 Origin Server의 응답을 받아 Outbound Filter를 거쳐 요청자에게 다시 응답을 보낸다.</p>
+<h2>내부로 들어가보자. (사용하기)</h2>
+<p>이해하기 전에 어떤 Library들이 어떤 역할을 하는지 확인하고 보면 Application 설정할때 이해가 쉽다.</p>
+<blockquote>
+<p>빠르게 구성하는 방법은 <a href="https://github.com/Netflix/zuul/tree/master/zuul-sample">zuul-sample</a>을 받아 사용한다.</p>
+</blockquote>
+<p>다음은 Zuul2를 사용하기 위해서 알아둬야 하는 것들이다.</p>
+<h3>Bootstrap</h3>
+<p>실제로 <strong>Application을 구동하는 Class</strong>이다.</p>
+<p>Application이 시작되면 설정 부터 읽는다.</p>
+<pre class="hljs language-java"><code>ConfigurationManager.loadCascadedPropertiesFromResources(<span class="hljs-string">"{propertiesFileName}"</span>);
+</code></pre>
+<p><strong>properties</strong>를 <code>Archaius</code>에 등록한다.</p>
+<pre class="hljs language-java"><code>Injector injector = InjectorBuilder.fromModule(<span class="hljs-keyword">new</span> ZuulModule()).createInjector();
+</code></pre>
+<p>그리고 <strong>Dependency Binding 정보</strong>가 담겨있는 <strong>Google Guice Module</strong>을 로딩한다. <code>injector</code>로 <code>instance</code>를 생성 및 주입할때 참고되는 정보이다.</p>
+<pre class="hljs language-java"><code>BaseServerStartup serverStartup = injector.getInstance(BaseServerStartup.class);
+Server server = serverStartup.server();
+server.start(<span class="hljs-keyword">true</span>);
+</code></pre>
+<p><code>BaseServerStartup Type</code>의 <code>ServerStartup</code> 객체를 생성하고 <code>Server</code> 객체를 통해 서버가 시작된다.</p>
+<h3>ServerStartup</h3>
+<p><code>BaseServerStartup</code>를 구현한 Class로 <code>Service Type</code>을 설정한다.</p>
+<p>현재 <strong>zuul2(2.1.6)</strong> 은 다음과 같은 <code>Service Type</code>을 지원한다.</p>
+<pre class="hljs language-java"><code><span class="hljs-keyword">enum</span> ServerType {
+    HTTP,
+    HTTP2,
+    HTTP_MUTUAL_TLS,
+    WEBSOCKET,
+    SSE
+}
+</code></pre>
+<p>기본적으로는 <code>SERVER_TYPE</code> 변수에</p>
+<pre class="hljs language-java"><code><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> ServerType SERVER_TYPE = ServerType.HTTP;
+</code></pre>
+<p><strong>HTTP</strong>로 설정되어 있고, 다른 Type의 서비스를 제공하고 싶다면 <code>SERVER_TYPE</code>을 변경하면 된다.</p>
+<p><code>ServerStartup</code>는 <code>BaseServerStartup</code>을 상속 받아 <code>chooseAddrsAndChannels</code> 메소드를 <strong>override</strong>한다. <code>chooseAddrsAndChannels</code> 메소드는 <code>Service Type</code>을 정하고, 정해진 Type에 맞게 <strong>Netty Channel Config</strong>을 반환하는 메소드이다. <code>ServerStartup</code>가 초기화 될때 호출되며 이 <strong>Config</strong>로 <code>Server</code>를 생성한다. 그리고 <code>Bootstrap</code>에서 <code>Server</code>의 <strong>start</strong> 메소드에 의해 서버가 시작된다.</p>
+<blockquote>
+<p>Constructor에 Inject되는 실제 Class들이 보고 싶다면 xxxModule Class를 확인하면 어떤 Class들이 binding 되는지 확인 할 수 있다. (Google Guice 참고)</p>
+</blockquote>
+<blockquote>
+<p>ServerStartup 클래스는 sample 프로젝트를 참고해서 작성 하면된다. 불필요 한 설정들은 주석 처리하는 것을 추천한다.</p>
+</blockquote>
+<h3>ChannelHandler</h3>
+<p><code>Zuul2</code>는 <code>netty</code>기반으로 구현되어 있다. 참고로 <code>netty</code>는 <code>ChannelInitilalizer</code>를 통해 <code>Channel Pipeline</code>에 <strong>Event Handler</strong>들을 등록하고, <strong>등록 순으로 동작</strong>하게 되어있다. 이 말은 <code>Zuul2</code>도 <code>ChannelInitilalizer</code>들이 있다는 얘기다.
+<code>chooseAddrsAndChannels</code> 메소드에서 <code>Service Type</code>별로 <strong>Config</strong>를 만들어 낼때 <code>Service Type</code>에 맞는 <code>ChannelInitializer</code>도 셋팅된다.</p>
+<ul>
+<li>HTTP =&gt; ZuulServerChannelInitializer</li>
+<li>HTTP2 =&gt; Http2SslChannelInitializer</li>
+<li>HTTP_MUTUAL_TLS =&gt; Http1MutualSslChannelInitializer</li>
+</ul>
+<p>위 <code>ChannelInitializer</code>들도 미리 구현되어 있으며 가져다 사용하기만 하면된다. 사실상 내부 <strong>process의 핵심</strong>이다.</p>
+<h4>ZuulServerChannelInitializer</h4>
+<p>참고로 <code>Http Channel Initializer</code>들은 <code>BaseZuulChannelInitializer</code>를 상속 받고 있고 구조는 모두 비슷하다. 그리고 내부를 보면 어마어마한 <strong>Handler</strong>들이 들어있다.</p>
+<pre class="hljs language-java"><code><span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">initChannel</span><span class="hljs-params">(Channel ch)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+    ChannelPipeline pipeline = ch.pipeline();
+    <span class="hljs-keyword">this</span>.storeChannel(ch);
+    <span class="hljs-keyword">this</span>.addTimeoutHandlers(pipeline);
+    <span class="hljs-keyword">this</span>.addPassportHandler(pipeline);
+    <span class="hljs-keyword">this</span>.addTcpRelatedHandlers(pipeline);
+    <span class="hljs-keyword">this</span>.addHttp1Handlers(pipeline);
+    <span class="hljs-keyword">this</span>.addHttpRelatedHandlers(pipeline);
+    <span class="hljs-keyword">this</span>.addZuulHandlers(pipeline);
+}
+</code></pre>
+<p><code>ChannelPipeline</code>에 <strong>Event Handler</strong>를 등록하는 과정이다. 보통 <code>Application</code>에 사용되는 <strong>config</strong>, <strong>properties</strong>, <strong>logging 정보</strong>들은 <strong>channel attribute를 이용해서 다음 Handler로 전달되고, 꺼내서 사용되고, 다시 저장된다.</strong></p>
+<p>메소드 명만봐도 어떤 <code>Handler</code>들이 설정되어 있는지 어느정도는 알 수 있다.</p>
+<p>이중에서 한가지 <strong>짚고 넘어가야할 handler</strong>는 <code>PassportHandler</code>로, 요청의 <strong>내부 동작 Tracking</strong> 용도이다. <code>addPassportHandler</code> 메소드에서 <code>Pipeline</code>에 추가된다.</p>
+<pre class="hljs language-java"><code><span class="hljs-keyword">this</span>.history.addLast(<span class="hljs-keyword">new</span> PassportItem(state, <span class="hljs-keyword">this</span>.now()));
+</code></pre>
+<p>내부적으로 <code>PassportItem</code> 라는 객체를 <strong>Handler 단계 별</strong>로 <code>List</code>에 누적 시키면서 <strong>hisotry</strong>를 간직하다가, 문제가 생겼을 때나, 디버깅 시에 <strong>누적된 history를 로그로 출력</strong>시킨다.</p>
+<pre class="hljs language-java"><code>CurrentPassport {start_ms=<span class="hljs-number">1523578203359</span>,
+[+<span class="hljs-number">0</span>=IN_REQ_HEADERS_RECEIVED,
++<span class="hljs-number">260335</span>=FILTERS_INBOUND_START,
++<span class="hljs-number">310862</span>=IN_REQ_LAST_CONTENT_RECEIVED,
++<span class="hljs-number">1053435</span>=MISC_IO_START,
++<span class="hljs-number">2202112</span>=MISC_IO_STOP,
++<span class="hljs-number">3917598</span>=FILTERS_INBOUND_END,
++<span class="hljs-number">4157288</span>=ORIGIN_CH_CONNECTING,
++<span class="hljs-number">4218319</span>=ORIGIN_CONN_ACQUIRE_START,
++<span class="hljs-number">4443588</span>=ORIGIN_CH_CONNECTED,
++<span class="hljs-number">4510115</span>=ORIGIN_CONN_ACQUIRE_END,
++<span class="hljs-number">4765495</span>=OUT_REQ_HEADERS_SENDING,
++<span class="hljs-number">4799545</span>=OUT_REQ_LAST_CONTENT_SENDING,
++<span class="hljs-number">4820669</span>=OUT_REQ_HEADERS_SENT,
++<span class="hljs-number">4822465</span>=OUT_REQ_LAST_CONTENT_SENT,
++<span class="hljs-number">4830443</span>=ORIGIN_CH_ACTIVE,
++<span class="hljs-number">20811792</span>=IN_RESP_HEADERS_RECEIVED,
++<span class="hljs-number">20961148</span>=FILTERS_OUTBOUND_START,
++<span class="hljs-number">21080107</span>=IN_RESP_LAST_CONTENT_RECEIVED,
++<span class="hljs-number">21109342</span>=ORIGIN_CH_POOL_RETURNED,
++<span class="hljs-number">21539032</span>=FILTERS_OUTBOUND_END,
++<span class="hljs-number">21558317</span>=OUT_RESP_HEADERS_SENDING,
++<span class="hljs-number">21575084</span>=OUT_RESP_LAST_CONTENT_SENDING,
++<span class="hljs-number">21594236</span>=OUT_RESP_HEADERS_SENT,
++<span class="hljs-number">21595122</span>=OUT_RESP_LAST_CONTENT_SENT,
++<span class="hljs-number">21659271</span>=NOW]}
+</code></pre>
+<blockquote>
+<p>참고: <a href="https://github.com/Netflix/zuul/wiki/Core-Features#request-passport">Request Passport</a></p>
+</blockquote>
+<p><strong>State</strong>와 <strong>수행시간</strong>이 기록되기 때문에 오래 걸리는 <strong>Handler 단계</strong>를 찾을 수 있다.</p>
+<p>그리고 가장 중요한 <code>ZuulFilter</code>를 등록하는 <code>addZuulHandlers</code> 이다. 이 메소드에서 작성한 <strong>inbound, outbound filter를 ChannelPipeline에 등록</strong>한다.</p>
+<pre class="hljs language-java"><code><span class="hljs-keyword">this</span>.addZuulFilterChainHandler(pipeline);
+</code></pre>
+<p><code>FilterLoader</code>를 통해 <code>FilterRegistry</code>에 로드되어 있는 <code>Filter</code>들을 <code>Type</code>(<code>Inbound</code> 또는 <code>OutBound</code>)에 따라 가져온다.
+<code>FilterLoader</code>에서 <code>Filter</code>들을 가져올때 설정된 <strong>order</strong>로 정렬된 <strong>List</strong>로 반환된다. 그리고 <code>Filter</code>는 정렬된 순으로 실행된다.
+오름 차순으로 정렬 되기 때문에 <code>Filter</code>는 <strong>order가 낮을 수록 우선순위가 높다</strong>.</p>
+<p><strong>List</strong>로 가져온 <code>Inbound Filter</code>과 <code>Outbound Filter</code>는 각각 <code>ZuulFilterChainRunner</code>로 만들어진다.</p>
+<p>그리고 만들어진 각 <code>ZuulFilterChainRunner</code>를 이용하여 <strong>ZuulFilterChainHandler</strong>를 만들고, 이 <strong>Handler</strong>를 <strong>가장 마지막 Handler로 ChnaelPipeline에 등록</strong>된다.</p>
+<p>잠시 <code>ZuulFilterChainHandler</code>의 실행과정을 살펴 보면</p>
+<p><code>Inbound Filter List</code>(<strong>requestFilterChain</strong>)로 <code>ZuulFilterChainRunner</code>를 생성할때 <code>Outbound Filter List</code>(<strong>responseFilterChain</strong>)로  <code>ZuulEndPointFilter</code>를 생성하여 인자로 넘겨진다.
+그리고 이들은 <strong>nextStage</strong>로 연결되어 있다.</p>
+<pre class="hljs"><code>ZuulFilterChainHandler ----&gt; requestFilterChain (ZuulFilterChainRunner), responseFilterChain (ZuulFilterChainRunner)
+                                              (1)	
+
+requestFilterChain (ZuulFilterChainRunner) ----&gt; requestFilters(List), nextStage (ZuulEndPointRunner)
+			    (1)							  (2)
+
+nextStage (ZuulEndPointRunner) ----&gt; nextStage (responseFilterChain (ZuulFilterChainRunner))
+	   (2)							(3)
+</code></pre>
+<p><code>ZuulFilterChainHandler</code>에서 <strong>channelRead</strong>시 <code>requestFilterChain</code><strong>(1)</strong> 가 실행된다. 그리고
+<code>Inbound Filter</code>가 모두 실행되면 <code>nextStage(ZuulEndPointRunner)</code><strong>(2)</strong> 로 요청을 전달한다.</p>
+<p><code>ZuulEndPointRunner</code><strong>(2)</strong> 는 <strong>Context</strong> 정보를 가지고 <strong>ProxyEndpoint</strong>를 만들며, 이때 <code>Inbound Filter</code>에서 설정된 <strong>Vip</strong> 정보를 가지고 <code>NettyOrigin</code> 객체를 생성한다.</p>
+<p><code>NettyOrigin</code>을 통해 <code>Origin Server</code>로 요청을 보내며 응답을 받는다. (응답을 받을때는 동적으로 <strong>OriginResponseReceiver Handler</strong>를 <code>ChannelPipeline</code> 중간에 추가한다.)</p>
+<p><code>Origin Server</code>으로 부터 응답을 받은뒤 <code>nextStage(responseFilterChain (ZuulFilterChainRunner))</code><strong>(3)</strong> 로 <code>Origin Server</code>의 응답을 전달한다.
+그리고 <code>reponseFilter(Outbound Filter)</code>가 실행된다. 그리고 <strong>ChannelOutoundHandler</strong>들을 통해 응답값이 요청자로 반환된다.</p>
+<h3>FilterLoader</h3>
+<p>Zuul2의 <code>Inbound</code>, <code>Outbound Filter</code>는 <strong>Groovy</strong>로 작성한다. <code>FilterLoader</code>에는 <code>GroovyCompiler</code>와 <code>FilterFactory</code> 클래스가 있으며, <strong>Runtime</strong>에 <code>GroovyCompiler</code>로 <strong>작성한 Filter File</strong>을 <strong>compile</strong> 후 <code>FilterFactory</code>로 인스턴스를 생성하여 <code>FilterRegistry</code>에 저장한다.</p>
+<p>그리고 <strong>작성된 Filter</strong>는 <code>FilterFileManager</code>에 의해 동적으로 관리가 된다. <strong>Filter</strong>를 수정하면
+프로세스를 재시작 할 필요 없이, 변경사항을 체크 하여 동적으로 다시 로드하여 반영 시킨다.
+변경사항을 체크하는 주기는 <strong>5초</strong>로 고정되어 있다.</p>
+<pre class="hljs language-java"><code><span class="hljs-meta">@Provides</span>
+<span class="hljs-function">FilterFileManagerConfig <span class="hljs-title">provideFilterFileManagerConfig</span><span class="hljs-params">()</span> </span>{
+    ...
+    FilterFileManagerConfig filterConfig = <span class="hljs-keyword">new</span> FilterFileManagerConfig(filterLocations, filterClassNames, <span class="hljs-number">5</span>);
+    ...
+}
+</code></pre>
+<blockquote>
+<p>ZuulFiltersModule을 보면 config 설정 값 그리고 어떤 Factory와 Compiler를 사용하는지 볼 수있다.</p>
+</blockquote>
+<pre class="hljs language-java"><code><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">putFilter</span><span class="hljs-params">(File file)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+    <span class="hljs-keyword">try</span> {
+        String sName = file.getAbsolutePath();
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.filterClassLastModified.get(sName) != <span class="hljs-keyword">null</span> &amp;&amp; file.lastModified() != (Long)<span class="hljs-keyword">this</span>.filterClassLastModified.get(sName)) {
+            LOG.debug(<span class="hljs-string">"reloading filter "</span> + sName);
+            <span class="hljs-keyword">this</span>.filterRegistry.remove(sName);
+        }
+
+        ZuulFilter filter = <span class="hljs-keyword">this</span>.filterRegistry.get(sName);
+        <span class="hljs-keyword">if</span> (filter == <span class="hljs-keyword">null</span>) {
+            Class clazz = <span class="hljs-keyword">this</span>.compiler.compile(file);
+            <span class="hljs-keyword">if</span> (!Modifier.isAbstract(clazz.getModifiers())) {
+                filter = <span class="hljs-keyword">this</span>.filterFactory.newInstance(clazz);
+                <span class="hljs-keyword">this</span>.putFilter(sName, filter, file.lastModified());
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+            }
+        }
+    }
+    ...
+}
+</code></pre>
+<p><code>FilterLoader</code>의 <code>Filter</code>를 등록하는 메소드이다. Zuul2는 <code>Filter</code>를 동적으로 반영해주는데, 변경 기준을 <strong>file의 수정 시간</strong>으로 판단한다. Filter가 기존에 존재하고 수정시간이 변경됬다면, 기존에 Registry에 등록된 <code>Filter</code>를 제거 한 후에 새로 <code>Filter</code>를 등록한다. 등록할때는 <strong>key</strong>를 <code>Filter file</code>의 <strong>절대경로와 파일이름이 key</strong>가 된다.</p>
+<h3>ZuulFilter</h3>
+<p>Zuul2의 <code>Filter</code>는 <strong>Groovy</strong>로 작성한다. <code>Inbound Filter</code>는 <code>HttpInboundSyncFilter</code>를 상속받아 구현되며, <code>OutBound Filter</code>는 <code>HttpOutboundSyncFilter</code>를 상속받아 구현한다.</p>
+<p><code>Filter</code>가 수행되는 로직은 <strong>apply</strong> 메소드로, <code>HttpMessage</code>에서 <strong>Context</strong>를 가져와 <strong>Path로 분기</strong> 처리한다.</p>
+<p>작성법의 예는 <strong>Zuul-Sample</strong> 프로젝트를 참고 하면된다.</p>
+<p>그 밖의 필요한 옵션들은 메소드를 <strong>override</strong> 하여 설정이 가능하다.</p>
+<pre class="hljs language-java"><code>SessionContext context = httpRequestMessage.getContext()
+String uuid = context.getUUID()
+</code></pre>
+<p>요청마다 UUID가 발급되어 context에 저장되는데 이는 나중에 요청에대한 key로 활용 될 수 있다.</p>
+<h4>Filter 우선순위</h4>
+<pre class="hljs language-java"><code><span class="hljs-meta">@Override</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">filterOrder</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-number">21</span>
+}
+</code></pre>
+<p>값이 낮을 수록 우선순위가 높다.</p>
+<h4>Filter 유무</h4>
+<pre class="hljs language-java"><code><span class="hljs-meta">@Override</span>
+<span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">shouldFilter</span><span class="hljs-params">(HttpRequestMessage httpRequestMessage)</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>
+}
+</code></pre>
+<p>true여야 <code>Filter</code>를 실행한다. 특정 요청에대해 특정 <code>Filter</code>를 건너띄어야 한다면 <strong>shouldFilter</strong>에서 분기 처리를 할수 있다.</p>
+<h4>Http Body 접근</h4>
+<pre class="hljs language-java"><code><span class="hljs-meta">@Override</span>
+<span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">needsBodyBuffered</span><span class="hljs-params">(HttpRequestMessage request)</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>
+}
+</code></pre>
+<p><strong>HttpMessage Body</strong>에 접근하려면 위 설정을 추가해야 한다.</p>
+<h4>Filter 중지</h4>
+<pre class="hljs language-java"><code>httpRequestMessage.getContext().stopFilterProcessing()
+</code></pre>
+<p>다음 <code>Filter</code>로 전달하지 않고 중지 시키킨다.</p>
+<h2>properties 설정</h2>
+<h3>Filter path 설정</h3>
+<pre class="hljs"><code># Loading Filters
+zuul.filters.root=/service/gateway/src/main/groovy/filter
+zuul.filters.locations=${zuul.filters.root}/inbound,${zuul.filters.root}/outbound
+zuul.filters.packages=com.netflix.zuul.filters.common
+</code></pre>
+<p><code>Filter file</code>은 프로젝트와 같이 패키징 되지 않고 별도의 위치에 존재 하기 때문에 <strong>절대경로</strong>로 명시 해준다.</p>
+<h3>Origin Service 설정 (Ribbon)</h3>
+<pre class="hljs"><code>{ServiceName}.ribbon.xxxx...
+</code></pre>
+<p><code>Origin Service</code>로의 요청은 <strong>Ribbon</strong>을 통해 <strong>Load Balancing</strong>되어 요청한다.</p>
+<h3>Origin Service Server List</h3>
+<pre class="hljs"><code># without Eureka
+serviceA.ribbon.ServerListRefreshInterval=2000
+serviceA.ribbon.listOfServers=http://localhost:9010
+serviceA.ribbon.MaxConnectionsPerHost=-1
+
+config.ribbon.ServerListRefreshInterval=2000
+config.ribbon.listOfServers=localhost:7080
+config.ribbon.MaxConnectionsPerHost=-1
+
+# with eureka
+serviceB.ribbon.NIWSServerListClassName=com.netflix.niws.loadbalancer.DiscoveryEnabledNIWSServerList
+serviceB.ribbon.DeploymentContextBasedVipAddresses=eureka_client3
+serviceB.MaxConnectionsPerHost=-1
+</code></pre>
+<p><code>Origin Server List</code>를 설정할 때 <strong>Eureka</strong>를 연동하거나 <strong>properties에 직접설정</strong>할 수 있다.</p>
+<p>Eureka와 연동 하지 않고 properties에 직접 설정했을 경우 이 값은 <strong>Archaius를 통해서 동적으로 변경가능</strong>하다. (ex: config 서버를 구성하면 된다.)</p>
+<h3>성능관련</h3>
+<p>두가지를 조정해야 한다.</p>
+<ul>
+<li>Connection 제한</li>
+<li>동시성 처리</li>
+</ul>
+<h4>Connection 제한</h4>
+<pre class="hljs"><code>{ServiceName}.ribbon.MaxConnectionsPerHost =-1
+</code></pre>
+<p><strong>Endpoint</strong>당 <strong>Connection의 수</strong>이다. (default: 50)</p>
+<p>설정이 50이라면 연결될 수 있는 Connection은 최대 50개(Pooled 포함)이며 설정된 수치 이상 Connection은 생성되지 않는다.</p>
+<p>실제 Endpoint당 ConnectionPool size는 <code>{ServiceName}.netty.client.perServerWaterline</code> 값이다. (default: 4)</p>
+<p>Origin과 Connection을 맺을 때 Pooled된 Connection이 없다면 Connection을 생성한다. 이때 PooledConnectionFactory에 의해서 Connection은 PooledConnection으로 wrapping 된다. 그리고 Connection을 사용하고 나서 <strong>release 요청시 Pool에 저장</strong>된다.</p>
+<p>Connection을 Pool에 저장하려 할때, 현재 Pool size가 <code>perServerWaterline</code> 이상이라면 저장하지 않고 <strong>close</strong> 된다.
+이렇게 Pool size가 유지된다.</p>
+<p><strong>MaxConnectionsPerHost</strong> 값을 <strong>-1</strong>로 설정하게 되면 Connection은 제한없이 계속해서 생성된다. 요청량이 많을 경우에만 계속해서 생성되며 <strong>기본적으로 Connection을 acquire 시도시 Pooled된 Connection을 사용한다</strong>.</p>
+<h4>동시성 처리</h4>
+<pre class="hljs"><code>### Origin Concurrency Protection
+zuul.origin.{serviceName}.concurrency.max.requests=7500
+</code></pre>
+<p><strong>Zuul</strong>에서 <strong>Origin</strong>으로 <strong>요청처리량에 대한 수치</strong>를 조절할 수 있다. 기본적으로는 <code>concurrency.protect.enabled</code> 설정이 true 되어 있고, default는 200이다. Origin으로 요청시 Count Check 및 증가 시키며 finish되면 Count를 감소 시킨다.</p>
+<blockquote>
+<p>Eureka 설정은 <a href="">여기</a> 참고</p>
+</blockquote>
+<h2>참고사항</h2>
+<p>현재 최신 버전은 <strong>2.1.6</strong> 이며</p>
+<p>실제 서비스에 사용한 버전은 2.1.3 이다.
+2.1.3 ~ 2.1.5에서 특별하게 크게 바뀌진 않았고, 코어 개선 정도로 업데이트 되었다.
+그래서 내부 소스 수정 없이 버전만 올려도 문제 없었다.</p>
+<p>2.1.6 부터는 일부 수정할 필요가 있다.</p>
+<p><code>WebSocket</code>과 <code>Server Side Push</code>로 인해서 <code>BaseServerStartup</code>에 새로운 <strong>logging 메소드가 추가</strong> 되었고,
+기존에 사용하던 <code>logPortConfigured</code> 메소드는 <strong>deprecate</strong> 되었다.</p>
+<p>참고로 github sample code는 2.1.6 기준으로 되어 있으며, 문서는 아직 2.1.5로 되어 있다.</p>
+<p>dependecy 관련해서 <strong>2.1.3 ~ 2.1.5</strong> 에서는
+<code>netflix governator-core</code>와 <code>common-configuration</code>, zuul logger인 <code>blitz4j</code>를 추가 했어야 했지만,
+<strong>2.1.6</strong> 에서는 <code>google guava</code>를 추가 해야 한다.
+주의 해야 할 점은 <strong>20.0 이하</strong>를 사용해야 한다.</p>
+<p>netflix 내부 코어에서 사용하는 <code>google guice</code>에서 <code>com.google.common.base.Objects.toStringHelper</code>를 사용하고 있는데
+이는 <strong>guava 21.0 부터 삭제</strong> 되었기 때문이다.</p>
+<blockquote>
+<p><a href="https://issues.apache.org/jira/browse/HADOOP-14891">관련 문서</a></p>
+</blockquote>
+
+
+            </article>
+		</div>
+	</div>
+	<!-- //content -->
+	
+	<!-- footer -->
+	<div id="footer">
+	</div>
+	<!-- //footer -->
+</div>
+
+</body>
+</html>

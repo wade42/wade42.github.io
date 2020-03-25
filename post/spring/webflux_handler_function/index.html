@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ko"> 
+<head> 
+<meta charset="utf-8"> 
+<title>Index</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<link rel="stylesheet" type="text/css" href="./../../../css/theme2.css" />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.css" />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/default.min.css">
+<style>
+	.markdown-body {
+		box-sizing: border-box;
+		min-width: 200px;
+		max-width: 980px;
+		margin: 0 auto;
+		padding: 45px;
+	}
+
+	@media (max-width: 767px) {
+		.markdown-body {
+			padding: 15px;
+		}
+	}
+</style>
+</head>
+<body>
+<!-- skip nav -->
+<ul id="skip">
+<li><a href="#aside" tabindex="0">메뉴 바로가기</a></li>
+<li><a href="#content">본문 바로가기</a></li>
+</ul>
+<!-- //skip nav -->
+<div id="wrap">
+	<!-- header -->
+	<div class="wrapAside">
+		<!-- <h1>Side</h1> -->
+		<div id="aside" class="aside">
+			<div class="logo">
+				<a href="/" class="logoLink">WADE</a>
+			</div>
+			<div class="menuBar">
+				<button type="button" class="buttonMenu" aria-label="메뉴 버튼">
+					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="butt" stroke-linejoin="arcs"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+				</button>
+				<div class="wrapInput">
+					<form id="searchForm">
+						<fieldset>
+							<legend>검색</legend>
+							<label for="inputSearch" class="blind">
+								검색어를 입력하세요.
+							</label>
+							<input id="inputSearch" type="text" class="inputText" title="검색어를 입력하세요"/>
+						</fieldset>
+					</form>
+				</div>
+				<button type="button" class="buttonSearch" aria-button="검색 버튼">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="butt" stroke-linejoin="arcs"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+				</button>
+			</div>
+			<div class="wrapListMenu">
+				<ul class="listMenu">
+					<li class="menu">
+						<a href="/post/akka/" class="link ellip">
+							Akka
+							<span class="count">0</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="/post/spring/" class="link ellip on">
+							Spring
+							<span class="count">6</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="/post/spring/" class="link ellip">
+							Scouter
+							<span class="count">0</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="/post/netflix/zuul/" class="link ellip">
+							Netflix
+							<span class="count"></span>
+						</a>
+						<ul class="listSubMenu">
+							<li class="subMenu">
+								<a href="/post/netflix/zuul/" class="link ellip">
+									Zuul2
+									<span class="count">2</span>
+								</a>
+							</li>
+							<li class="subMenu">
+								<a href="/post/netflix/Ribbon/" class="link ellip">
+									Ribbon
+									<span class="count">0</span>
+								</a>
+							</li>
+							<li class="subMenu">
+								<a href="/post/netflix/archaius/" class="link ellip">
+									archaius
+									<span class="count">0</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li class="menu">
+						<a href="/post/reactive/reactor/" class="link ellip">
+							Reactive
+							<span class="count"></span>
+						</a>
+						<ul class="listSubMenu">
+							<li class="subMenu">
+								<a href="/post/reactor/" class="link ellip">
+									Reactor
+									<span class="count">1</span>
+								</a>
+                            </li>
+                        </ul>
+                    </li>
+					<li class="menu">
+						<a href="/post/resilience4j/" class="link ellip">
+							Resilience4j
+							<span class="count">3</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- //header -->
+	
+	<!-- content -->
+	<div id="content" class="wrapContent">
+		<div class="mdListWrap">
+			<!-- <div class="mdItem">[WebFlux] HandlerFunction</div>
+			<div class="mdItem">[WebFlux] HandlerFunction</div> -->
+
+			<article class="markdown-body">
+
+
+<h1>Webflux HandlerFunction</h1>
+<p><code>RouterFunction</code>을 생성할때 <code>Path</code>와 <code>Method</code>, <code>MediaType</code>에 매칭되는 <code>HandlerFunction</code>을 작성하게 된다.</p>
+<p>이때 작성하는 <code>HandlerFunction</code>를 작성할 때 소소한 작성법을 알아보자.</p>
+<pre class="hljs language-java"><code><span class="hljs-meta">@FunctionalInterface</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">HandlerFunction</span>&lt;<span class="hljs-title">T</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ServerResponse</span>&gt; </span>{
+    <span class="hljs-function">Mono&lt;T&gt; <span class="hljs-title">handle</span><span class="hljs-params">(ServerRequest var1)</span></span>;
+}
+</code></pre>
+<p><code>ServerRequest</code>를 받고 <code>Mono&lt;ServerResponse&gt;</code>를 반환 하는 람다나 메소드를 작성하여 레퍼런스를 전달 하면된다.</p>
+<p>보통 간단한 API 구조는 요청값 변환 및 파싱, validation, service 로직 수행후 결과를 반환한다.
+그래서 크게 4단계로 알아 본다.</p>
+<ul>
+<li><strong>요청값 변환</strong></li>
+<li><strong>validation</strong></li>
+<li><strong>Service method 조합</strong></li>
+<li><strong>Response 처리</strong></li>
+</ul>
+<h2>요청값 변환 (body or path)</h2>
+<h3>Body Conversion</h3>
+<pre class="hljs language-java"><code><span class="hljs-function"><span class="hljs-keyword">public</span> ServerRequest <span class="hljs-title">translateUserLink</span><span class="hljs-params">(ServerRequest request)</span> </span>{
+    <span class="hljs-comment">// mono</span>
+    request.bodyToMono(User.class)
+    ...
+    <span class="hljs-comment">// flux</span>
+    request.bodyToFlux(User.class)
+    ...
+}
+</code></pre>
+<p><code>POST</code>를 처리 할때는 <code>ServerRequest</code>에서 요청 데이터 <strong>body</strong>를 <code>bodyToMono</code> 또는 <code>bodyToFlux</code>로 <code>Mono&lt;Class&gt;</code>또는 <code>Flux&lt;Class&gt;</code>로 변환하여 <strong>Operator</strong>를 이어갈수 있다.</p>
+<p>그리고 기본적으로 <strong>Jackson</strong>을 지원하고 있기 때문에 <strong>jackson annotation</strong>을 사용할 수 있다.</p>
+<h3>Path Variable</h3>
+<p><code>Path</code>를 변수로 치환하여 사용할때 <code>ServerRequest</code>의 <code>pathVariable</code> 메소드를 이용한다.</p>
+<pre class="hljs language-java"><code><span class="hljs-comment">// RourterFUnction</span>
+GET(<span class="hljs-string">"/{device}/{os}"</span>, linkTranslateHandler::translateUserLink)
+
+<span class="hljs-comment">// HandlerFunction</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ServerRequest <span class="hljs-title">translateUserLink</span><span class="hljs-params">(ServerRequest request)</span> </span>{
+    String device = request.pathVariable(<span class="hljs-string">"device"</span>);
+    String os = request.pathVariable(<span class="hljs-string">"os"</span>);
+
+    Mono.just(<span class="hljs-keyword">new</span> User(device, os))
+        ...
+}
+</code></pre>
+<h2>Validation</h2>
+<p><strong>MVC</strong>에서 사용하던 <code>Validation</code> 클래스 구조를 그대로 사용했다.</p>
+<pre class="hljs language-java"><code><span class="hljs-meta">@Component</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TargetUserVaildator</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Validator</span></span>{
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">supports</span><span class="hljs-params">(Class&lt;?&gt; aClass)</span> </span>{
+        <span class="hljs-keyword">return</span> TargetUser.class.equals(aClass);
+    }
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">validate</span><span class="hljs-params">(Object o, Errors errors)</span> </span>{
+        TargetUser targetUser = (TargetUser) o;
+        <span class="hljs-keyword">if</span>(targetUser.getUserid() &lt; <span class="hljs-number">1</span>) {
+            errors.rejectValue(<span class="hljs-string">"userid"</span>, <span class="hljs-string">"invalid userid"</span>);
+        }
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, <span class="hljs-string">"type"</span>, <span class="hljs-string">"type is empty"</span>);
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, <span class="hljs-string">"targetingList"</span>, <span class="hljs-string">"targetingList is empty"</span>);
+    }
+
+    <span class="hljs-comment">// 추가된 메소드</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">validate</span><span class="hljs-params">(TargetUser targetUser)</span> </span>{
+        Errors errors = <span class="hljs-keyword">new</span> BeanPropertyBindingResult(targetUser, <span class="hljs-string">"targetUser"</span>);
+        <span class="hljs-keyword">this</span>.validate(targetUser, errors);
+
+        <span class="hljs-keyword">if</span>(errors.hasErrors()) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> ServerWebInputException(errors.getFieldError().getCode());
+        }
+    }
+}
+</code></pre>
+<p>차이점이 있다면, <code>validate</code> 메소드를 추가했다. <code>validate</code> 호출해서 <strong>errors에 error가 있는지 검사</strong>하고 <code>Exception</code>(<code>ServerWebInputException</code>)을 throw 한다.
+<code>ServerWebInputException</code> 는 <code>ResponseStatusException</code>를 상속 받은 클래스이며 내부적으로 <code>status</code>가 <code>HttpStatus.BAD_REQUEST</code>
+로 고정되어 있다.</p>
+<p>참고로 <strong>Status</strong>가 고정되어있는 <code>Exception</code>은 다음과 같다.</p>
+<ul>
+<li><strong>ServerWebInputException -&gt; BAD REQUEST</strong></li>
+<li><strong>ServerErrorException -&gt; INTERNAL ERROR</strong></li>
+</ul>
+<p>위 두 클래스는 <code>ResponseStatusException</code> 상속 받고 있다. 다른 <strong>Status Code</strong>를 주고 싶다면 <code>ResponseStatusException</code>를 사용하거나 상속받아 구현한다.</p>
+<p>변환 후에 로직을 이어 가면 다음 과 같다.</p>
+<pre class="hljs language-java"><code>request.bodyToMono(TargetUser.class) <span class="hljs-comment">// 변환</span>
+	.switchIfEmpty(Mono.just(<span class="hljs-keyword">new</span> TargetUser())) <span class="hljs-comment">// body가 없는 경우 빈 객체 생성</span>
+	.doOnNext(targetUserVaildator::validate) <span class="hljs-comment">// validate</span>
+</code></pre>
+<p><strong>switchIfEmpty 를 추가해줘야하는 이유</strong>는 <code>POST</code> 요청시 body가 비어있는 상태라면 <code>request.bodyToMono</code> 다음 chaining으로 연결된 <code>Operator</code>들은 실행되지 않고 아무런 error 없이 종료된다.</p>
+<h2>Service method</h2>
+<p>그 밖에 Service 클래스에 구현한 method들도 <code>Mono&lt;T&gt;</code>로 반환 시켜, <strong>flat</strong>하게 <code>Operator</code>를 이어 가는 것을 추천한다.</p>
+<h4>여러 인자들을 참조해야할 경우가 생길 때</h4>
+<p>Service method를 <code>map</code> 또는 <code>flatMap Operator</code>을 이용해서 chaining으로 연결할 때 Service method들이 하나의 parameter만을 받게 설계가 된다면 상관없지만 그렇지가 않은 경우가 있다.</p>
+<p>예를 들어, 메타 데이터와 메소드에서 반환된 값이 계속해서 필요한 경우라고 <strong>가정</strong>하면.</p>
+<h3>아래 예제는 일부러 만든것이니 참고만 하자.</h3>
+<p>가장 간단한 방법은 <code>Tuples</code> 로 감싸서 여러개  데이터를 계속해서 <strong>wrapping</strong>해서 넘기는 방법이 있으나, 이렇게 사용하게 되면 유지보수도 힘들어지고, 코드가 생각보다 많이 난해해 져서 보기가 좋지 않다. (너무 많은 값들을 wrapping 하거나, 빈번히 사용되는 경우에)</p>
+<h4>Tuples Wrapping</h4>
+<p>다음으로 넘길때 마다 계속해서 참조값을 <code>Tuples</code>로 <strong>Wrapping</strong>해서 넘겨야 한다.
+이럴 경우에는 인자 들이 점점 많아 지는 경우가 생길 수도 있다.</p>
+<pre class="hljs language-java"><code>String id = request.pathVariable(<span class="hljs-string">"id"</span>);
+String name = request.pathVariable(<span class="hljs-string">"name"</span>);
+DeviceInfo deviceInfo = (DeviceInfo)request.attribute(<span class="hljs-string">"deviceInfo"</span>).get(); <span class="hljs-comment">// meta data</span>
+
+<span class="hljs-keyword">return</span> Mono.just(deviceInfo)
+    .doOnNext(deviceValidator::validate) <span class="hljs-comment">// pc 인지 mobile 인지 검사</span>
+    .map(d -&gt; userValidator.validate(id, name))
+    .flatMap(userService::getUserInfo)
+    <span class="hljs-comment">// service1 수행 후 Tuples로 meta data와 함께 반환</span>
+    .map(g -&gt; Tuples.of(g, deviceInfo, userService.server1(g, deviceInfo)))
+    <span class="hljs-comment">// service2 수행 후 Tuples로 meta data와 함께 반환</span>
+    .map(t -&gt; Tuples.of(t.getT1(), t.getT2(), t.getT3(), userService.server2(t.getT3())))
+    <span class="hljs-comment">// service3 수행</span>
+    .map(t -&gt; userService.server3(t.getT1(), t.getT2(), t.getT3(), t.getT4()))
+
+</code></pre>
+<p>(억지로) 코드를 고쳐보자.</p>
+<h4>SubStream</h4>
+<p><code>Substream</code>을 생성하여 함수 외부 인자를 접근하는 방법이다.
+<code>upstream</code>의 변수를 접근 한다. depth는 늘어나지만 코드가 보기에 훨씬 깔금해 보인다. (주관적)</p>
+<p>그리고 Service Method을 작성할 때 <code>Mono&lt;T&gt;</code>로 반환하게 작성 했기 때문에 <strong>flatmap</strong>으로 계속 해서 이어 갈수 있다.</p>
+<pre class="hljs language-java"><code>String id = request.pathVariable(<span class="hljs-string">"id"</span>);
+String name = request.pathVariable(<span class="hljs-string">"name"</span>);
+DeviceInfo deviceInfo = (DeviceInfo)request.attribute(<span class="hljs-string">"deviceInfo"</span>).get(); <span class="hljs-comment">// meta data</span>
+
+<span class="hljs-keyword">return</span> Mono.just(deviceInfo)
+        .doOnNext(deviceValidator::validate) <span class="hljs-comment">// pc 인지 mobile 인지 검사</span>
+        .map(d -&gt; userValidator.validate(id, name))
+        .flatMap(userService::getUserInfo)
+        .flatMap(g -&gt;
+            Mono.just(g)
+                <span class="hljs-comment">// server1 수행</span>
+                .flatMap(gc -&gt; userService.server1(gc, deviceInfo))
+                .flatMap(al -&gt; Mono.just(al)
+                    <span class="hljs-comment">// server2 수행</span>
+                    .flatMap(userService::server2)
+                    <span class="hljs-comment">// server3 수행</span>
+                    .flatMap(ad -&gt; userService.server3(g, deviceInfo, al, ad))
+                )
+        )
+
+</code></pre>
+<h2>Result 처리</h2>
+<p><strong>data</strong>를 내려줘야 하는 경우와 <strong>view template</strong>을 내려줘야하는 경우가 있다.</p>
+<h4>!) 참고사항</h4>
+<p><strong>view</strong>를 내려줘야 하는 경우는 한가지 점검해봐야 할것이, <code>SpringApplication</code>에서 <code>@EnableWebflux</code>를 사용했다면 <strong>제거</strong>해야한다. <code>@EnableWebflux</code>를 사용했을 경우 <code>WebFlux</code>의 일부 <code>auto-confuration</code>을 <strong>disable</strong> 시키는데 여기에 <strong>static resources</strong>가 포함되어 있어 <strong>template engine</strong>을 사용할 수 없게된다.</p>
+<blockquote>
+<p><a href="https://stackoverflow.com/questions/51843344/what-is-the-function-of-the-enablewebflux-annotation?noredirect=1&amp;lq=1">stackoverflow: What is the function of the @EnableWebFlux annotation</a></p>
+</blockquote>
+<blockquote>
+<p>참고로 webflux는 thymeleaf를 default template engine으로 사용한다.</p>
+</blockquote>
+<h3>성공 처리</h3>
+<h4>data를 내려줘야 할때</h4>
+<p>예전에는 BodyInserters의 fromObject를 사용했지만 현재는 Deprecated 되었다. 아래와 같이 처리한다.</p>
+<pre class="hljs language-java"><code>ServerResponse.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(fromValue(DATA))
+</code></pre>
+<pre class="hljs language-java"><code>ServerResponse.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).bodyValue(DATA)
+</code></pre>
+<h4>html page를 내려줘야할 때</h4>
+<ul>
+<li><strong>page</strong></li>
+</ul>
+<pre class="hljs language-java"><code>ServerResponse.status(HttpStatus.OK).contentType(MediaType.TEXT_HTML).render(<span class="hljs-string">"permission"</span>);
+</code></pre>
+<ul>
+<li><strong>page with data</strong></li>
+</ul>
+<pre class="hljs language-java"><code>ServerResponse.status(HttpStatus.OK).contentType(MediaType.TEXT_HTML).render(<span class="hljs-string">"permission"</span>, info);
+</code></pre>
+<h3>에러 처리</h3>
+<h4>data를 내려줘야 할때</h4>
+<pre class="hljs language-java"><code>.onErrorResume(ServerWebInputException.class, e -&gt; ServerResponse.status(HttpStatus.BAD_REQUEST).bodyValue(e.getReason()))
+.onErrorResume(Exception.class, e -&gt; ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).bodyValue(e.getMessage()))
+</code></pre>
+<h4>error page를 내려줘야할 떄</h4>
+<pre class="hljs language-java"><code><span class="hljs-comment">// onErrorResume</span>
+.onErrorResume(ServerWebInputException.class, e -&gt; ServerResponse.status(HttpStatus.BAD_REQUEST).contentType(MediaType.TEXT_HTML).render(<span class="hljs-string">"40X"</span>))
+.onErrorResume(Exception.class, e -&gt; ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_HTML).render(<span class="hljs-string">"50X"</span>))
+
+<span class="hljs-comment">// onErrorReturn</span>
+.onErrorReturn(ServerWebInputException.class, ServerResponse.status(HttpStatus.BAD_REQUEST).contentType(MediaType.TEXT_HTML).render(<span class="hljs-string">"40X"</span>))
+.onErrorReturn(Exception.class, ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_HTML).render(<span class="hljs-string">"50X"</span>))
+</code></pre>
+<p><code>onErrorResume</code>를 사용한 이유는 발생된 <code>Exception</code> 객체를 전달 받기 위함이고, <code>Exception</code> 객체가 필요 없다면 <code>onErrorReturn</code>를 사용해도 된다.</p>
+<p>최종적으로 아래와 같이 작성 할수 있다.</p>
+<pre class="hljs language-java"><code><span class="hljs-keyword">return</span> request.bodyToMono(User.class)
+    .switchIfEmpty(Mono.just(<span class="hljs-keyword">new</span> User()))
+    <span class="hljs-comment">// validation</span>
+    .doOnNext(userVaildator::validate) 
+    <span class="hljs-comment">// service</span>
+    .flatMap(userService::getUserInfo)
+    .flatMap(userService::getStatistics)
+    <span class="hljs-comment">// success response</span>
+    .flatMap(r -&gt; ServerResponse.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).bodyValue(DATA))
+    <span class="hljs-comment">// error response</span>
+    .onErrorResume(ServerWebInputException.class, e -&gt; ServerResponse.status(HttpStatus.BAD_REQUEST).bodyValue(e.getReason()))
+    .onErrorResume(Exception.class, e -&gt; ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).bodyValue(e.getMessage()))
+
+</code></pre>
+<h1>정리</h1>
+<ul>
+<li>view를 내려줘야 할 경우 @EnableWebflux를 사용하지 않아야함
+<ul>
+<li><a href="https://stackoverflow.com/questions/51843344/what-is-the-function-of-the-enablewebflux-annotation?noredirect=1&amp;lq=1">stackoverflow: What is the function of the @EnableWebFlux annotation</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+			</article>
+		</div>
+	</div>
+	<!-- //content -->
+	
+	<!-- footer -->
+	<div id="footer">
+	</div>
+	<!-- //footer -->
+</div>
+
+</body>
+</html>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ko"> 
+<head> 
+<meta charset="utf-8"> 
+<title>Index</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<link rel="stylesheet" type="text/css" href="./../../../css/theme2.css" />
+<link rel="stylesheet" type="text/css" href="./../../../css/github-markdown.css" />
+<link rel="stylesheet" type="text/css" href="./../../../css/highlight.default.min.css">
+<style>
+	.markdown-body {
+		box-sizing: border-box;
+		min-width: 200px;
+		max-width: 980px;
+		margin: 0 auto;
+		padding: 45px;
+	}
+
+	@media (max-width: 767px) {
+		.markdown-body {
+			padding: 15px;
+		}
+	}
+</style>
+</head>
+<body>
+<!-- skip nav -->
+<ul id="skip">
+<li><a href="#aside" tabindex="0">메뉴 바로가기</a></li>
+<li><a href="#content">본문 바로가기</a></li>
+</ul>
+<!-- //skip nav -->
+<div id="wrap">
+	<!-- header -->
+	<div class="wrapAside">
+		<!-- <h1>Side</h1> -->
+		<div id="aside" class="aside">
+			<div class="logo">
+				<a href="/" class="logoLink">WADE</a>
+			</div>
+			<div class="menuBar">
+				<button type="button" class="buttonMenu" aria-label="메뉴 버튼">
+					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="butt" stroke-linejoin="arcs"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+				</button>
+				<div class="wrapInput">
+					<form id="searchForm">
+						<fieldset>
+							<legend>검색</legend>
+							<label for="inputSearch" class="blind">
+								검색어를 입력하세요.
+							</label>
+							<input id="inputSearch" type="text" class="inputText" title="검색어를 입력하세요"/>
+						</fieldset>
+					</form>
+				</div>
+				<button type="button" class="buttonSearch" aria-button="검색 버튼">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="butt" stroke-linejoin="arcs"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+				</button>
+			</div>
+			<div class="wrapListMenu">
+				<ul class="listMenu">
+					<li class="menu">
+						<a href="/post/akka/" class="link ellip">
+							Akka
+							<span class="count">0</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="/post/spring/" class="link ellip on">
+							Spring
+							<span class="count">6</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="/post/spring/" class="link ellip">
+							Scouter
+							<span class="count">0</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="/post/netflix/zuul/" class="link ellip">
+							Netflix
+							<span class="count"></span>
+						</a>
+						<ul class="listSubMenu">
+							<li class="subMenu">
+								<a href="/post/netflix/zuul/" class="link ellip">
+									Zuul2
+									<span class="count">2</span>
+								</a>
+							</li>
+							<li class="subMenu">
+								<a href="/post/netflix/Ribbon/" class="link ellip">
+									Ribbon
+									<span class="count">0</span>
+								</a>
+							</li>
+							<li class="subMenu">
+								<a href="/post/netflix/archaius/" class="link ellip">
+									archaius
+									<span class="count">0</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li class="menu">
+						<a href="/post/reactive/reactor/" class="link ellip">
+							Reactive
+							<span class="count"></span>
+						</a>
+						<ul class="listSubMenu">
+							<li class="subMenu">
+								<a href="/post/reactor/" class="link ellip">
+									Reactor
+									<span class="count">1</span>
+								</a>
+                            </li>
+                        </ul>
+                    </li>
+					<li class="menu">
+						<a href="/post/resilience4j/" class="link ellip">
+							Resilience4j
+							<span class="count">3</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- //header -->
+	
+	<!-- content -->
+	<div id="content" class="wrapContent">
+		<div class="mdListWrap">
+			<!-- <div class="mdItem">[WebFlux] HandlerFunction</div>
+			<div class="mdItem">[WebFlux] HandlerFunction</div> -->
+
+			<article class="markdown-body">
+
+
+<h1>Webflux (Reactor) CircuitBreaker 추가 (with Resilience4j)</h1>
+<h2>Resilience4j를 사용한 이유</h2>
+<p>일단 Netflix Hystrics를 사용하지 않은 이유는, 더 이상 개발하지 않으며 현재 버전으로 유지되고 있다.</p>
+<p>Reilience4j는 무엇보다도 Reactor 및 RxJava에 손쉽게 연동이 가능하다.
+(Reactive Streams Operators가 구현되있어 Operator Pipeline 연결이 가능하다.)</p>
+<p>Spring, Webflux 뿐만아니라 Couchbase Library를 사용하는 경우, Akka를 사용하는 경우 에도 모두 사용이 가능하다.
+그리고 gRPC 사용시에도 적용할 수 있었다. 즉, 어떠한 Library나 Framework와 관련없이 적용이 쉽게 가능하다.</p>
+<h2>준비</h2>
+<p><code>CircuitBreaker</code> 객체를 생성하기 위해서는 먼저 해당 <code>CircuitBreaker</code>의 설정이 담기는 <strong>Config</strong>와 Event를 등록하는 <strong>Registry</strong> 두가지를 생성해야 한다.</p>
+<h3>Config</h3>
+<pre class="hljs language-java"><code>CircuitBreakerConfig.custom()
+</code></pre>
+<p><code>Builder</code> 객체를 이용해서 <code>Config</code> 객체를 생성한다.</p>
+<pre class="hljs language-java"><code>    <span class="hljs-comment">// 성공률이 70% 이하가 되면 Circuitbreaker 상태를 Open이 된다.</span>
+    .failureRateThreshold(<span class="hljs-number">70</span>)
+    <span class="hljs-comment">// 5초뒤 open 상태 초기화</span>
+    .waitDurationInOpenState(Duration.ofMillis(<span class="hljs-number">5000</span>))
+    <span class="hljs-comment">// open 상태의 call buffer max 수</span>
+    .permittedNumberOfCallsInHalfOpenState(<span class="hljs-number">10</span>)
+    <span class="hljs-comment">// call buffer 수</span>
+    .slidingWindowSize(<span class="hljs-number">100</span>)
+    <span class="hljs-comment">// 기록 전 최소 call 수치</span>
+    .minimumNumberOfCalls(<span class="hljs-number">10</span>)
+</code></pre>
+<p>method chain으로 수치 설정을 한다.</p>
+<pre class="hljs language-java"><code>    .recordExceptions(IOException.class, TimeoutException.class,
+        StatusRuntimeException.class, <span class="hljs-comment">// grpc connection error</span>
+        DataAccessResourceFailureException.class <span class="hljs-comment">// DB</span>
+    )
+    .build();
+</code></pre>
+<p>설정된 <code>Exception Type</code>들만 기록이 된다. 그리고 <code>build</code>를 통해 <code>CircuitBreakerConfig</code> 생성한다.</p>
+<blockquote>
+<p>config에 대한 자세한 설명과 Type에 따른 내부 동작을 알고 싶다면 <a href="">다음 글</a>을 참고 한다.</p>
+</blockquote>
+<h3>Registry</h3>
+<pre class="hljs language-java"><code>CircuitBreakerRegistry circuitBreakerRegistry = CircuitBreakerRegistry.of(customCircuitBreakerConfig);
+
+circuitBreakerRegistry.getEventPublisher().onEntryAdded(entryAddedEvent -&gt; {
+    CircuitBreaker addedCircuitBreaker =  entryAddedEvent.getAddedEntry();
+    log.info(<span class="hljs-string">"CircuitBreaker {} added"</span>, addedCircuitBreaker.getName());
+    addedCircuitBreaker.getEventPublisher().onEvent(circuitBreakerEvent -&gt; 
+        log.info(<span class="hljs-string">"event: {}"</span>, circuitBreakerEvent.toString())
+    );
+})
+.onEntryRemoved(entryRemovedEvent -&gt; {
+    CircuitBreaker removedCircuitBreaker = entryRemovedEvent.getRemovedEntry();
+    log.info(<span class="hljs-string">"CircuitBreaker {} removed"</span>, removedCircuitBreaker.getName());
+});
+</code></pre>
+<p>설정한 <code>CircuitBreakerConfig</code>을 가지고 <code>CircuitBreakerRegistry</code>를 만들고 registry에 <code>CircuitBreaker</code>가 <strong>등록</strong>, <strong>제거</strong> 되었을 때 로그를 남기는 <strong>Event</strong>를 등록한다.</p>
+<p><code>Event</code>를 등록하는 부분을 좀더 자세히 보면</p>
+<pre class="hljs language-java"><code>CircuitBreaker addedCircuitBreaker =  entryAddedEvent.getAddedEntry();
+        log.info(<span class="hljs-string">"CircuitBreaker {} added"</span>, addedCircuitBreaker.getName());
+        addedCircuitBreaker.getEventPublisher().onEvent(circuitBreakerEvent -&gt; 
+            log.info(<span class="hljs-string">"event: {}"</span>, circuitBreakerEvent.toString())
+        );
+</code></pre>
+<p>그리고 <code>Circuitbreaker</code>에서 발생하는 모든 Event를 등록할 수있다. 위에서는 Registry에 추가되었을 경우에 <code>Circuitbreaker</code>에 로깅하는 <code>Event</code>를 추가하였다.</p>
+<pre class="hljs language-java"><code>CircuitBreaker addedCircuitBreaker = circuitBreakerRegistry.circuitBreaker(<span class="hljs-string">"couponBreaker"</span>, customCircuitBreakerConfig);
+addedCircuitBreaker.getEventPublisher().onEvent(circuitBreakerEvent -&gt; log.info(<span class="hljs-string">"event: {}"</span>, circuitBreakerEvent.toString()));
+</code></pre>
+<p><code>entryAddedEvent</code>에서 등록되게 하는것이 아니라 생성한 <code>Circuitbreaker</code> 객체에 접근해서 등록 해도 된다.</p>
+<p><code>CircuitbreakerEvent</code>는 다음과 같은 <code>Event Type</code>을 가지고 있다.</p>
+<pre class="hljs language-java"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">enum</span> Type {
+    ERROR(<span class="hljs-keyword">false</span>),
+    IGNORED_ERROR(<span class="hljs-keyword">false</span>),
+    SUCCESS(<span class="hljs-keyword">false</span>),
+    NOT_PERMITTED(<span class="hljs-keyword">false</span>),
+    STATE_TRANSITION(<span class="hljs-keyword">true</span>),
+    RESET(<span class="hljs-keyword">true</span>),
+    FORCED_OPEN(<span class="hljs-keyword">false</span>),
+    DISABLED(<span class="hljs-keyword">false</span>);
+
+    ...
+}
+</code></pre>
+<p><code>onEvent</code>메소드에서 전달되는 <code>CircuitBreakerEvent</code>객체를 통해 Type별로 Event를 분기 시킬수 있다.</p>
+<p><code>circuitBreakerEvent.toString()</code> 으로 로깅했을 경우에는 <code>Circuitbreaker</code>의 <strong>state</strong>와 <strong>elapse time</strong>이 출력된다.</p>
+<pre class="hljs language-java"><code>CircuitBreaker gatewayCircuitBreaker = circuitBreakerRegistry.circuitBreaker(<span class="hljs-string">"gatewayBreaker"</span>, customCircuitBreakerConfig);
+</code></pre>
+<p>그리고 <code>CircuitBreakerRegistry</code>와 <code>CircuitBreakerConfig</code> 통해서 <code>CircuitBreaker</code>를 생성하고 <strong>Bean</strong>에 등록하여 사용한다.</p>
+<p>제공하고자 하는는 API별로 설정값을 다르게 하여 여러개의 <code>CircuitBreaker</code>를 생성 및 등록 후 용도에 따라 사용하면 된다.
+참고로 이 <code>CircuitBreaker</code>객체에 수치가 기록되고 누적된다.</p>
+<h2>적용하기</h2>
+<p>생각보다 <code>Reactor</code>나 <code>RxJava</code>에서는 사용하기가 정말 간단하다. 그외 다른 환경에서 사용하고 싶다면 <a href="">공식 홈페이지</a>를 참조하면 여러가지 사용법이 나와있다.</p>
+<pre class="hljs language-java"><code>.transformDeferred(CircuitBreakerOperator.of(gatewayBreaker))
+</code></pre>
+<p><code>Reactor Stream</code> 중간에 <code>CircuitBreakerOperator</code>를 통해 <code>CircuitBreaker Stream</code>을 추가 한다.</p>
+<blockquote>
+<p>참고로 compose 메소드는 deprecate 되었고 메소드 명이 transformDeferred로 바뀌었다. <a href="https://github.com/reactor/reactor-core/issues/1745">github issue</a></p>
+</blockquote>
+<h4>그럼 저 Operator 하나 추가만 하면 되는데… 어떻게 동작 되는걸까?</h4>
+<p>생각보다 내부 동작은 간단(?)하다.</p>
+<blockquote>
+<p>Reactor에 대한 더 자세한 설명은 <a href="">여기</a>를 참고.</p>
+</blockquote>
+<p><code>Reactor</code>의 <code>Operator</code>는 임의의 <strong>Publisher</strong>이며 <strong>Decorating</strong> 역할을 한다. 그리고 각 <code>Operator</code> 클래드들과 연관된각 <strong>Subscriber</strong> 클래스 들이 <code>React core</code>에 정의가 되어 있다.</p>
+<blockquote>
+<p>하나의 예로 map 의 Operator 클래스는 MonoMap 이며 Subsriber 클래스는 MapSubscriber이다.</p>
+</blockquote>
+<p><code>Reactor</code>를 사용할때 보통 메소드 chaining으로 <code>Operator</code> 메소드에 람다를 전달하며 작성 하게된다. 이때 마다 <strong>Operator</strong> 객체들이 <strong>생성</strong>되고 <strong>반환</strong>된다.</p>
+<p>그리고 <code>subscrib</code>가 호출 될때 <strong>upstream(Subscriber)</strong> 과 <strong>downstream(Subscriber)</strong> 의 <strong>조립(연결)</strong> 작업이 시작된다. 하나의 Stream으로 조립 작업이 끝나면 upstream에서 downstream으로 연결된 subscriber들이 실행되게 된다.</p>
+<p><code>CircuitbreakerOperator</code>는 <strong>Reactor</strong>의 <strong>Operator</strong>와 <strong>Subscriber</strong>를 <strong>구현</strong>한 클래드스들을 포함하는 클래스로 <code>Reactor Core Operator</code>들과 연결 가능하게 되어 있다.</p>
+<pre class="hljs language-java"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CircuitBreakerOperator</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title">UnaryOperator</span>&lt;<span class="hljs-title">Publisher</span>&lt;<span class="hljs-title">T</span>&gt;&gt; </span>{
+    ...
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; <span class="hljs-function">CircuitBreakerOperator&lt;T&gt; <span class="hljs-title">of</span><span class="hljs-params">(CircuitBreaker circuitBreaker)</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> CircuitBreakerOperator(circuitBreaker);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Publisher&lt;T&gt; <span class="hljs-title">apply</span><span class="hljs-params">(Publisher&lt;T&gt; publisher)</span> </span>{
+        <span class="hljs-keyword">if</span> (publisher <span class="hljs-keyword">instanceof</span> Mono) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> MonoCircuitBreaker((Mono)publisher, <span class="hljs-keyword">this</span>.circuitBreaker);
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (publisher <span class="hljs-keyword">instanceof</span> Flux) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> FluxCircuitBreaker((Flux)publisher, <span class="hljs-keyword">this</span>.circuitBreaker);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalPublisherException(publisher);
+        }
+    }
+}
+</code></pre>
+<p><code>CircuitbreakerOperator</code>는 <code>transformDeferred  Operator</code> 메소드의 인자로 넘겨지는 함수의 구현체이고</p>
+<blockquote>
+<p>transformDeferred안에서 apply가 호출 된다.</p>
+</blockquote>
+<pre class="hljs language-java"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MonoCircuitBreaker</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title">MonoOperator</span>&lt;<span class="hljs-title">T</span>, <span class="hljs-title">T</span>&gt;
+<span class="hljs-title">class</span> <span class="hljs-title">FluxCircuitBreaker</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title">FluxOperator</span>&lt;<span class="hljs-title">T</span>, <span class="hljs-title">T</span>&gt;
+</span></code></pre>
+<p><code>CircuitbreakerOperator</code>로 전달되는 상위 <code>Publisher Type</code>에 따라서 <code>MonoCircuitBreaker</code>, <code>FluxCircuitBreaker</code>가 생성된다. 그리고 이 두 클래스가 <strong>Operator (Publisher)</strong> 이고
+<strong>Subscribe</strong> 메소드가 구현되어 있다. 두 클래스 모두 로직은 동일하다.</p>
+<pre class="hljs language-java"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MonoCircuitBreaker</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title">MonoOperator</span>&lt;<span class="hljs-title">T</span>, <span class="hljs-title">T</span>&gt;
+...
+    <span class="hljs-title">public</span> <span class="hljs-title">void</span> <span class="hljs-title">subscribe</span>(<span class="hljs-title">CoreSubscriber</span>&lt;? <span class="hljs-title">super</span> <span class="hljs-title">T</span>&gt; <span class="hljs-title">actual</span>) </span>{
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.circuitBreaker.tryAcquirePermission()) {
+            <span class="hljs-keyword">this</span>.source.subscribe(<span class="hljs-keyword">new</span> CircuitBreakerSubscriber(<span class="hljs-keyword">this</span>.circuitBreaker, actual, <span class="hljs-keyword">true</span>));
+        } <span class="hljs-keyword">else</span> {
+            Operators.error(actual, CallNotPermittedException.createCallNotPermittedException(<span class="hljs-keyword">this</span>.circuitBreaker));
+        }
+
+    }
+    ...
+}
+</code></pre>
+<p><strong>구독될때 (조립될때)</strong> 인자로 넘겨진 <code>Circuitbreaker</code>의 <code>tryAcquirePermission</code> 메소드로 현재 <code>Circuitbreaker</code>의
+<strong>StateReference</strong>를 <strong>Check</strong> 후 <strong>Subscriber(CircuitBreakerSubscriber)</strong> 를 설정한다. 인자로 받는 <code>actual</code>은  <strong>downstream</strong> 이다.</p>
+<blockquote>
+<p>어떻게 permission을 얻어오는지는 자세히 알고 싶다면 <a href="">여기</a> 참고</p>
+</blockquote>
+<pre class="hljs language-java"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CircuitBreakerSubscriber</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title">AbstractSubscriber</span>&lt;<span class="hljs-title">T</span>&gt;
+    ...
+    <span class="hljs-title">protected</span> <span class="hljs-title">void</span> <span class="hljs-title">hookOnNext</span>(<span class="hljs-title">T</span> <span class="hljs-title">value</span>) </span>{
+        <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.isDisposed()) {
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.singleProducer &amp;&amp; <span class="hljs-keyword">this</span>.successSignaled.compareAndSet(<span class="hljs-keyword">false</span>, <span class="hljs-keyword">true</span>)) {
+                <span class="hljs-keyword">this</span>.circuitBreaker.onSuccess(System.nanoTime() - <span class="hljs-keyword">this</span>.start, TimeUnit.NANOSECONDS);
+            }
+
+            <span class="hljs-keyword">this</span>.eventWasEmitted.set(<span class="hljs-keyword">true</span>);
+            <span class="hljs-keyword">this</span>.downstreamSubscriber.onNext(value);
+        }
+
+    }
+    ...
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">hookOnComplete</span><span class="hljs-params">()</span> </span>{ ...
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">hookOnCancel</span><span class="hljs-params">()</span> </span>{ ...
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">hookOnError</span><span class="hljs-params">(Throwable e)</span> </span>{ ...
+}
+</code></pre>
+<p><code>CircuitBreakerSubscriber</code>는 <strong>upstream</strong>에서 <strong>value</strong>를 전달 받으면 <code>Circuitbreaker</code>에 <strong>기록</strong>하고 <strong>value</strong>를 그대로 <strong>downstream</strong>으로 전달한다.</p>
+<p>때문에 <code>CircuitebreakerOperator</code>를 <code>Stream</code> <strong>어느 위치에 추가할 것인지가 중요하다</strong>. 추가한 위치를 기준으로 <strong>upstream</strong>들에서 <strong>success</strong> 또는 <strong>error</strong>가 <code>Circuitbreaker</code>에 <strong>기록, 허용</strong> 및 <strong>차단</strong>이 될 것이고 <strong>downstream</strong>에서 일어난 일들은 <strong>기록되지 않는다</strong>.</p>
+<p>참고로 <code>MonoCircuitBreaker</code>의 <code>Operator</code>에서 보면 <strong>permission을 획득 하지 못하면</strong></p>
+<pre class="hljs language-java"><code>CallNotPermittedException.createCallNotPermittedException(<span class="hljs-keyword">this</span>.circuitBreaker));
+</code></pre>
+<p><code>Exception</code>이 발생하게 되어 있다.</p>
+<pre class="hljs language-java"><code>io.github.resilience4j.circuitbreaker.CallNotPermittedException: CircuitBreaker <span class="hljs-string">'gatewayBreaker'</span> is OPEN and does not permit further calls
+</code></pre>
+<p>실제로 다음과 같이 로그가 출력된다.</p>
+<pre class="hljs language-java"><code>.onErrorResume(CallNotPermittedException.class, e -&gt; ServerResponse.status(HttpStatus.BAD_REQUEST).bodyValue(<span class="hljs-string">"coupon breaker is open"</span>))
+</code></pre>
+<p>때문에 다음과같이 <strong>Error</strong>를 대응해 주면 된다.</p>
+<pre class="hljs language-java"><code><span class="hljs-keyword">return</span> Mono.just(deviceInfo)
+        .doOnNext(deviceValidator::validate) <span class="hljs-comment">// pc 인지 mobile 인지 검사</span>
+        .map(d -&gt; userValidator.validate(id, name))
+        .flatMap(userService::getUserInfo)
+        .flatMap(g -&gt;
+            Mono.just(g)
+                <span class="hljs-comment">// server1 수행</span>
+                .flatMap(gc -&gt; userService.server1(gc, deviceInfo))
+                .flatMap(al -&gt; Mono.just(al)
+                    <span class="hljs-comment">// server2 수행</span>
+                    .flatMap(userService::server2)
+                    <span class="hljs-comment">// server3 수행</span>
+                    .flatMap(ad -&gt; userService.server3(g, deviceInfo, al, ad))
+                )
+        )
+        .transformDeferred(CircuitBreakerOperator.of(gatewayBreaker))   &lt;-- 추가
+        .flatMap(a -&gt; ServerResponse.status(HttpStatus.OK).bodyValue(a))
+        .onErrorResume(ServerWebInputException.class, e -&gt; ServerResponse.status(HttpStatus.BAD_REQUEST).bodyValue(e.getReason()))
+        .onErrorResume(CallNotPermittedException.class, e -&gt; ServerResponse.status(HttpStatus.BAD_REQUEST).bodyValue(<span class="hljs-string">"coupon breaker is open"</span>))
+        .onErrorResume(Exception.class, e -&gt; ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).bodyValue(e.getMessage()))
+</code></pre>
+<p>최종적으로 실제로 사용된 <code>RouterHandlerFunction</code>의 예시이다.</p>
+<p>추가된 지점을 기준으로 upstream에서 일어난 결과들을 기록 할 것이고 중간에 하나라도 실패 된다면 (CircuitBreaker 가 Open 상태가 된다면) api는 실패로 간주 한다.</p>
+
+
+
+			</article>
+		</div>
+	</div>
+	<!-- //content -->
+	
+	<!-- footer -->
+	<div id="footer">
+	</div>
+	<!-- //footer -->
+</div>
+
+</body>
+</html>

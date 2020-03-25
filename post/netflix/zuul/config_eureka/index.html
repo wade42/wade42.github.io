@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ko"> 
+<head> 
+<meta charset="utf-8"> 
+<title>Index</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<link rel="stylesheet" type="text/css" href="./../../../../css/theme2.css" />
+<link rel="stylesheet" type="text/css" href="./../../../../css/github-markdown.css" />
+<link rel="stylesheet" type="text/css" href="./../../../../css/highlight.default.min.css">
+<style>
+	.markdown-body {
+		box-sizing: border-box;
+		min-width: 200px;
+		max-width: 980px;
+		margin: 0 auto;
+		padding: 45px;
+	}
+
+	@media (max-width: 767px) {
+		.markdown-body {
+			padding: 15px;
+		}
+	}
+</style>
+</head>
+<body>
+<!-- skip nav -->
+<ul id="skip">
+<li><a href="#aside" tabindex="0">메뉴 바로가기</a></li>
+<li><a href="#content">본문 바로가기</a></li>
+</ul>
+<!-- //skip nav -->
+<div id="wrap">
+	<!-- header -->
+	<div class="wrapAside">
+		<!-- <h1>Side</h1> -->
+		<div id="aside" class="aside">
+			<div class="logo">
+				<a href="/" class="logoLink">WADE</a>
+			</div>
+			<div class="menuBar">
+				<button type="button" class="buttonMenu" aria-label="메뉴 버튼">
+					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="butt" stroke-linejoin="arcs"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+				</button>
+				<div class="wrapInput">
+					<form id="searchForm">
+						<fieldset>
+							<legend>검색</legend>
+							<label for="inputSearch" class="blind">
+								검색어를 입력하세요.
+							</label>
+							<input id="inputSearch" type="text" class="inputText" title="검색어를 입력하세요"/>
+						</fieldset>
+					</form>
+				</div>
+				<button type="button" class="buttonSearch" aria-button="검색 버튼">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="butt" stroke-linejoin="arcs"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+				</button>
+			</div>
+			<div class="wrapListMenu">
+				<ul class="listMenu">
+					<li class="menu">
+						<a href="/post/akka/" class="link ellip">
+							Akka
+							<span class="count">0</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="/post/spring/" class="link ellip">
+							Spring
+							<span class="count">6</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="/post/spring/" class="link ellip">
+							Scouter
+							<span class="count">0</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="/post/netflix/zuul/" class="link ellip">
+							Netflix
+							<span class="count"></span>
+						</a>
+						<ul class="listSubMenu">
+							<li class="subMenu">
+								<a href="/post/netflix/zuul/" class="link ellip on">
+									Zuul2
+									<span class="count">2</span>
+								</a>
+							</li>
+							<li class="subMenu">
+								<a href="/post/netflix/Ribbon/" class="link ellip">
+									Ribbon
+									<span class="count">0</span>
+								</a>
+							</li>
+							<li class="subMenu">
+								<a href="/post/netflix/archaius/" class="link ellip">
+									archaius
+									<span class="count">0</span>
+								</a>
+							</li>
+						</ul>
+                    </li>
+                    <li class="menu">
+						<a href="/post/reactive/reactor/" class="link ellip">
+							Reactive
+							<span class="count"></span>
+						</a>
+						<ul class="listSubMenu">
+							<li class="subMenu">
+								<a href="/post/reactive/reactor/" class="link ellip">
+									Reactor
+									<span class="count">1</span>
+								</a>
+                            </li>
+                        </ul>
+                    </li>
+					<li class="menu">
+						<a href="/post/resilience4j/" class="link ellip">
+							Resilience4j
+							<span class="count">3</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- //header -->
+	
+	<!-- content -->
+	<div id="content" class="wrapContent">
+		<div class="mdListWrap">
+            <article class="markdown-body">
+
+
+<h1>Zuul2 Spring Eureka 연동하기</h1>
+<p>Zuul2를 사용할 때는 필요에따라 Service Discovery와 연동하거나 하지 않는다.</p>
+<p><strong>Service Discovery와 연동하는 경우</strong> 기본적으로 <strong>AWS</strong>로 연결되게 되어있다. 설정을 통해 직접 구축한 <strong>Eureka Server</strong>와 연동되게 Custom 할 수 있다.</p>
+<p>Custom 하는 방법은 문서에 나와 있지 않아,
+<code>Netflix Ribbon</code>을 참조 해야한다.
+이 설정은 Zuul2 뿐만 아니라 <strong>다른 Application에서 사용가능</strong>하다.</p>
+<p><strong>Service Discovery와 연동 하지 않을 경우</strong>에는 Eureka 설정을 꺼줘야 한다. 동적으로 <code>Origin Server List</code>를 변경하고 싶다면 <strong>별도로 Config 서버</strong>를 구축하거나 <strong>Archaius</strong>를 이용해야 한다.</p>
+<h2>Eureka 설정</h2>
+<p>Eureka 설정하는 방법은 두가지 방법이 있다.</p>
+<ul>
+<li><strong>Google Guice와 properties 설정</strong></li>
+<li><strong>직접 Instance 생성하여 설정</strong></li>
+</ul>
+<h3>Google Guice와 properties 설정</h3>
+<p>Zuul2는 내부적으로 Object 의존성을 Google Guice로 관리 하기 때문에 Google Guice 또는 properties 수정으로 변경이 가능하다.</p>
+<h4>기본설정</h4>
+<p>Zuul2는 따로 <code>Guice Module</code>에서 <strong>binding</strong> 설정을 하지 않으면 기본적으로 <code>EurekaInstanceConfig</code>가 <code>CloudInstanceConfig</code>(<code>Amazon</code>)로 <strong>binding</strong> 된다.</p>
+<p><code>Amazon</code>을 사용하지 않고 Eureka 서버를 구축했다면</p>
+<pre class="hljs language-java"><code><span class="hljs-comment">// custom eureka</span>
+bind(EurekaInstanceConfig.class).to(MyDataCenterInstanceConfig.class);
+</code></pre>
+<p><code>Gouce Module</code>에 <strong>binding</strong> 설정을 추가해야 한다.</p>
+<p>그리고 <strong>properties</strong>를 설정해준다.
+기본적으로 <code>namespace</code>는 <strong>eureka</strong>로 되어 있다.</p>
+<pre class="hljs"><code>eureka.name=gw1
+eureka.registration.enabled=true
+eureka.client.refresh.interval=5
+eureka.validateInstanceId=true
+eureka.shouldFetchRegistry=true
+eureka.serviceUrl.default=http://localhost:8050/eureka/,http://localhost:8060/eureka/,http://localhost:8070/eureka/
+</code></pre>
+<h4>namespace를 변경 하고 싶은 경우</h4>
+<pre class="hljs language-java"><code><span class="hljs-meta">@Inject</span>(
+    optional = <span class="hljs-keyword">true</span>
+)
+<span class="hljs-meta">@EurekaNamespace</span>
+<span class="hljs-keyword">private</span> String namespace;
+</code></pre>
+<p><code>EurekaConfig</code>들에 위와같이 <code>namespace</code>가 <strong>Inject</strong> 되도록 선언되어 있다. <code>namepsace</code>에 아무런 <strong>binding</strong> 설정이 되어 있지않다면 내부적으로 <code>eureka</code>를 기본적으로 사용된다.</p>
+<pre class="hljs language-java"><code>bind(String.class).annotatedWith(EurekaNamespace.class).toInstance(<span class="hljs-string">"{namesapce}"</span>);
+</code></pre>
+<p><code>namespace</code>를 <strong>binding</strong>을 추가 해준다.</p>
+<p><strong>toInstance</strong> 메소드에 <strong>변경하고자 하는 String name</strong>을 전달한다.</p>
+<pre class="hljs"><code>{namespace}.name=gw1
+{namespace}.registration.enabled=true
+{namespace}.client.refresh.interval=5
+{namespace}.validateInstanceId=true
+{namespace}.shouldFetchRegistry=true
+{namespace}.serviceUrl.default=http://localhost:8050/eureka/,http://localhost:8060/eureka/,http://localhost:8070/eureka/
+</code></pre>
+<p>설정한 <strong>namespace</strong>로 properties를 설정해준다.</p>
+<h3>직접 Instance 생성</h3>
+<p>Instance를 생성하는 방법은 Zuul, Spring 뿐만아니라 다른 <strong>Application에서도 그대로 사용가능</strong>하다.
+기본 <strong>설정이 있더라도 다시 새로 생성한 Eureka 설정으로 반영</strong>이 된다. <strong>DiscoveryClient 생성시 DiscoveryManager에 있는 discoveryClient를 덮어 버리기 때문</strong>이다.</p>
+<pre class="hljs language-java"><code><span class="hljs-comment">// eureka custom</span>
+EurekaInstanceConfig instanceConfig = <span class="hljs-keyword">new</span> MyDataCenterInstanceConfig(<span class="hljs-string">"{namespace}"</span>);
+InstanceInfo instanceInfo = <span class="hljs-keyword">new</span> EurekaConfigBasedInstanceInfoProvider(instanceConfig).get();
+ApplicationInfoManager applicationInfoManager = <span class="hljs-keyword">new</span> ApplicationInfoManager(instanceConfig, instanceInfo);
+EurekaClient eurekaClient = <span class="hljs-keyword">new</span> DiscoveryClient(applicationInfoManager, <span class="hljs-keyword">new</span> DefaultEurekaClientConfig(<span class="hljs-string">"{namespace}"</span>));
+</code></pre>
+<p><code>MyDataCenterInstanceConfig</code>와 <code>DefaultEurekaClientConfig</code>의 <strong>namespace</strong>를 동일하게 설정해준다.</p>
+<pre class="hljs language-java"><code><span class="hljs-comment">// custom eureka</span>
+bind(EurekaInstanceConfig.class).to(MyDataCenterInstanceConfig.class);
+</code></pre>
+<p>그리고 <strong>binding</strong> 해준다.</p>
+<pre class="hljs"><code>{namespace}.name=gw1
+{namespace}.registration.enabled=true
+{namespace}.client.refresh.interval=5
+{namespace}.validateInstanceId=true
+{namespace}.shouldFetchRegistry=true
+{namespace}.serviceUrl.default=http://localhost:8050/eureka/,http://localhost:8060/eureka/,http://localhost:8070/eureka/
+</code></pre>
+<p>설정한 <strong>namespace</strong>로 properties를 설정해준다.</p>
+<blockquote>
+<p>Instance를 사용했을 경우에는 서버가 종료되면 반드시 EurekaClient를 shutdown 해주는 것을 추천한다.</p>
+</blockquote>
+<h2>Service Discovery(Eureka)를 사용하지 않을 경우</h2>
+<p>Zuul2는 내부적으로 <code>Service Discovery</code>의 <code>DiscoveryClient</code>가 생성되며 연결을 시도한다. 때문에 설정으로 더 이상 Service Discovery Server로 접근하지 못하게 설정해야 한다.</p>
+<p>설정 방법은 2가지가 있다.</p>
+<ul>
+<li><strong>Default Amazon 설정을 종료하는 방법</strong></li>
+<li><strong>EurekaInstanceConfig binding 이용하는 방법</strong></li>
+</ul>
+<h3>Default Amazon 설정을 종료하는 방법</h3>
+<pre class="hljs"><code>eureka.registration.enabled=false
+eureka.validateInstanceId=false
+eureka.shouldFetchRegistry=false
+
+// 추가 설정
+eureka.mt.num_retries=0
+</code></pre>
+<p><code>eureka</code> 기본 설정 외에 <code>eureka.mt.xxxx</code> 설정도 함께 추가 해줘야한다.</p>
+<p><strong>Amazon</strong> 같은 경우에는 <strong>내부적으로 retry 관련 횟수가 고정</strong>되어 있다. 때문에 eureka 기본설정을 false로 하더라도 retry를 하게된다. 기본적으로 <code>Service Discovery</code>가 Amazon으로 설정되어 있기 때문에 <strong>Amazon 관련 설정도 추가</strong>해줘야한다.</p>
+<p><code>PropertyBasedAmazonInfoConfigConstants</code>에서</p>
+<pre class="hljs language-java"><code><span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Values</span> </span>{
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> DEFAULT_READ_TIMEOUT = <span class="hljs-number">5000</span>;
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> DEFAULT_CONNECT_TIMEOUT = <span class="hljs-number">2000</span>;
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> DEFAULT_NUM_RETRIES = <span class="hljs-number">3</span>;
+}
+</code></pre>
+<p>기본적으로 <code>Connection Timeout</code> 2초, <code>Retry</code> 3회로 되어있어 <code>Retry</code> 3회 이후에 서버가 시작 된다.
+때문에 위 옵션을 초기화해줘야 바로 서버가 시작된다.</p>
+<p>설정하지 않는 다면 다음과같은 로그를 확인 할 수 있다.</p>
+<pre class="hljs language-java"><code>com.netflix.appinfo.AmazonInfo$Builder [main] Skipping the rest of AmazonInfo init as we were not able to load instanceId after the configured number of retries: <span class="hljs-number">3</span>, per fail fast configuration: <span class="hljs-keyword">true</span>
+com.netflix.appinfo.RefreshableAmazonInfoProvider [main] Datacenter is: Amazon
+</code></pre>
+<p>그래서 6초 뒤에 Application이 시작된다.</p>
+<pre class="hljs language-java"><code><span class="hljs-number">2020</span>-<span class="hljs-number">02</span>-<span class="hljs-number">17</span> <span class="hljs-number">16</span>:<span class="hljs-number">05</span>:<span class="hljs-number">41</span>,<span class="hljs-number">080</span> INFO  com.netflix.governator.LifecycleInjectorCreator [main] Injector created successfully 
+<span class="hljs-number">2020</span>-<span class="hljs-number">02</span>-<span class="hljs-number">17</span> <span class="hljs-number">16</span>:<span class="hljs-number">05</span>:<span class="hljs-number">41</span>,<span class="hljs-number">093</span> WARN  com.netflix.discovery.internal.util.Archaius1Utils [main] Cannot find the properties specified : eureka-client. This may be okay <span class="hljs-keyword">if</span> there are other environment specific properties or the configuration is installed with a different mechanism.
+<span class="hljs-number">2020</span>-<span class="hljs-number">02</span>-<span class="hljs-number">17</span> <span class="hljs-number">16</span>:<span class="hljs-number">05</span>:<span class="hljs-number">41</span>,<span class="hljs-number">093</span> WARN  com.netflix.discovery.internal.util.Archaius1Utils [main] Cannot find the properties specified : eureka-client. This may be okay <span class="hljs-keyword">if</span> there are other environment specific properties or the configuration is installed with a different mechanism.
+<span class="hljs-number">2020</span>-<span class="hljs-number">02</span>-<span class="hljs-number">17</span> <span class="hljs-number">16</span>:<span class="hljs-number">05</span>:<span class="hljs-number">47</span>,<span class="hljs-number">456</span> WARN  com.netflix.appinfo.AmazonInfo$Builder [main] Skipping the rest of AmazonInfo init as we were not able to load instanceId after the configured number of retries: <span class="hljs-number">3</span>, per fail fast configuration: <span class="hljs-keyword">true</span>
+<span class="hljs-number">2020</span>-<span class="hljs-number">02</span>-<span class="hljs-number">17</span> <span class="hljs-number">16</span>:<span class="hljs-number">05</span>:<span class="hljs-number">47</span>,<span class="hljs-number">457</span> INFO  com.netflix.appinfo.RefreshableAmazonInfoProvider [main] Datacenter is: Amazon
+<span class="hljs-number">2020</span>-<span class="hljs-number">02</span>-<span class="hljs-number">17</span> <span class="hljs-number">16</span>:<span class="hljs-number">05</span>:<span class="hljs-number">47</span>,<span class="hljs-number">458</span> WARN  com.netflix.discovery.internal.util.Archaius1Utils [main] Cannot find the properties specified : eureka-client. This may be okay <span class="hljs-keyword">if</span> there are other environment specific properties or the configuration is installed with a different mechanism.
+<span class="hljs-number">2020</span>-<span class="hljs-number">02</span>-<span class="hljs-number">17</span> <span class="hljs-number">16</span>:<span class="hljs-number">05</span>:<span class="hljs-number">47</span>,<span class="hljs-number">459</span> WARN  com.netflix.discovery.internal.util.Archaius1Utils [main] Cannot find the properties specified : eureka-client. This may be okay <span class="hljs-keyword">if</span> there are other environment specific properties or the configuration is installed with a different mechanism.
+<span class="hljs-number">2020</span>-<span class="hljs-number">02</span>-<span class="hljs-number">17</span> <span class="hljs-number">16</span>:<span class="hljs-number">05</span>:<span class="hljs-number">47</span>,<span class="hljs-number">766</span> WARN  com.netflix.appinfo.AmazonInfo$Builder [main] Skipping the rest of AmazonInfo init as we were not able to load instanceId after the configured number of retries: <span class="hljs-number">3</span>, per fail fast configuration: <span class="hljs-keyword">true</span>
+<span class="hljs-number">2020</span>-<span class="hljs-number">02</span>-<span class="hljs-number">17</span> <span class="hljs-number">16</span>:<span class="hljs-number">05</span>:<span class="hljs-number">47</span>,<span class="hljs-number">766</span> INFO  com.netflix.appinfo.RefreshableAmazonInfoProvider [main] Datacenter is: Amazon
+<span class="hljs-number">2020</span>-<span class="hljs-number">02</span>-<span class="hljs-number">17</span> <span class="hljs-number">16</span>:<span class="hljs-number">05</span>:<span class="hljs-number">47</span>,<span class="hljs-number">770</span> INFO  com.netflix.appinfo.providers.EurekaConfigBasedInstanceInfoProvider [main] Setting initial instance status as: STARTING
+</code></pre>
+<h3>EurekaInstanceConfig binding 이용하는 방법</h3>
+<p>기본 Amazon 설정을 하는 것보다 훨씬 간단하다.</p>
+<p>Service Discovery를 실제 없는 Custom <code>MyDataCenterInstanceConfig</code> 로 바꿔주는 방법이다.</p>
+<pre class="hljs"><code>eureka.registration.enabled=false
+eureka.validateInstanceId=false
+eureka.shouldFetchRegistry=false
+</code></pre>
+<p>eureka 기본 설정을 해준다.</p>
+<pre class="hljs language-java"><code><span class="hljs-comment">// custom eureka</span>
+bind(EurekaInstanceConfig.class).to(MyDataCenterInstanceConfig.class);
+</code></pre>
+<p>그리고 <code>Gouce Module</code>에 <strong>binding</strong> 설정을 추가준다.</p>
+<p>아무런 설정이 없기 때문에 DiscoveryClient의 추가적인 동작 없이 Application이 시작된다.</p>
+
+
+
+            </article>
+		</div>
+	</div>
+	<!-- //content -->
+	
+	<!-- footer -->
+	<div id="footer">
+	</div>
+	<!-- //footer -->
+</div>
+
+</body>
+</html>

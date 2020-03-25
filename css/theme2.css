@@ -6,7 +6,7 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,fieldset,legend,textarea,p,th,
 html,body{width:100%;height:100%}
 body{font-family:'돋움',dotum,tahoma,sans-serif;font-size:12px;color:#000;}
 fieldset,img{border:0 none;vertical-align:top}
-dl,ul,ol,menu,li{list-style:none}
+.wrapListMenu < dl,ul,ol,menu,li{list-style:none}
 button{overflow:visible;border:0 none;background-color:transparent;cursor:pointer}
 button::-moz-focus-inner{padding:0;border:0} 
 address,caption,em{font-style:normal}
@@ -49,7 +49,7 @@ table{border-collapse:collapse;border-spacing:0;}
 .count {position: absolute; top: 5px; right: 15px;}
 
 /* mdList */
-.mdLink {position:relative; display:block; box-sizing:border-box; width:100%; height:40px; padding:5px 65px 5px 15px; font-size:15px; line-height:28px; color:#555; font-weight:500;}
+.mdLink {position:relative; display:block; box-sizing:border-box; width:100%; height:40px; padding:5px 65px 5px 15px; font-size:17px; line-height:28px; color:#555; font-weight:600;}
 .mdLink.on {color:#333;}
 .mdLink.on:after {content:''; position: absolute; top:18px; right:50px; width:5px; height:5px; background:orange; border-radius:50%;}
 .mdLink.new:after {content:''; position: absolute; top:18px; right:50px; width:5px; height:5px; background:#e91e63; border-radius:50%;}

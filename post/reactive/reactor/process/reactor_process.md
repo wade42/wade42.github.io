@@ -1,6 +1,6 @@
 # Reactor 내부 동작 과정 (Just and Defer, Mono and Flux)
 
-Reactor Operator들이 실행될때 내부에 어떤 일이 일어나는지 Mono와 Flux는 내부적으로 동작이 다른지 정도로 간단하게만 알아본다.
+Reactor Operator들이 실행될때 내부에 어떤 일이 일어나는지, Mono와 Flux는 내부적으로 동작이 다른지 간단하게만 알아본다.
 > 각 구성들의 역할에 대한 자세한 설명은 제외하고 흐름만 작성하였다.
 
 

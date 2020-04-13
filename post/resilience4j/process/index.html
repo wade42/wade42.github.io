@@ -136,9 +136,9 @@
 
 
 <h1>Reilience4j 동작 과정 (Acquire Permission)</h1>
-<p><code>CircuitBreaker</code>의 <code>Status</code>를 간단하게 이해 하려면 링버퍼로 하나의 <strong>고리</strong>라고 생각하면 쉽다.</p>
+<p>내부적으로 어떻게 판단되고 계산되는지 확인해본다. 내부동작은 Ractor 위주로 설명했다.</p>
+<p><code>CircuitBreaker</code>의 <code>Status</code>는 하나의 <strong>링버퍼</strong>로, 하나의 <strong>고리</strong>라고 생각하면 이해하기 쉽다.</p>
 <h2>어떻게 기록되는가</h2>
-<p>내부적으로 어떻게 판단되고 계산되는지 확인해본다. 동작은 Ractor 위주로 설명했다.</p>
 <h3>Reactor</h3>
 <ul>
 <li><strong>Publisher (Operator)</strong></li>

@@ -1,9 +1,8 @@
 # Reilience4j 동작 과정 (Acquire Permission)
-`CircuitBreaker`의 `Status`를 간단하게 이해 하려면 링버퍼로 하나의 **고리**라고 생각하면 쉽다.
+내부적으로 어떻게 판단되고 계산되는지 확인해본다. 내부동작은 Ractor 위주로 설명했다.
+참고로 `CircuitBreaker`의 `Status`는 하나의 **링버퍼**로, 하나의 **고리**라고 생각하면 이해하기 쉽다.
 
 ## 어떻게 기록되는가
-내부적으로 어떻게 판단되고 계산되는지 확인해본다. 동작은 Ractor 위주로 설명했다.
-
 ### Reactor
 *  **Publisher (Operator)**
 ~~~ java

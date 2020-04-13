@@ -175,7 +175,7 @@ return Mono.just(deviceInfo)
 **data**를 내려줘야 하는 경우와 **view template**을 내려줘야하는 경우가 있다.
 
 #### !) 참고사항
-**view**를 내려줘야 하는 경우는 한가지 점검해봐야 할것이, `SpringApplication`에서 `@EnableWebflux`를 사용했다면 **제거**해야한다. `@EnableWebflux`를 사용했을 경우 `WebFlux`의 일부 `auto-confuration`을 **disable** 시키는데 여기에 **static resources**가 포함되어 있어 **template engine**을 사용할 수 없게된다.
+**view**를 내려줘야 하는 경우는 한가지 점검해봐야 할것이, `SpringApplication`에서 `@EnableWebflux`를 사용했다면 **제거**해야한다. `@EnableWebflux`를 사용했을 경우 `WebFlux`의 일부 `auto-configuration`을 **disable** 시키는데 여기에 **static resources**가 포함되어 있어 **template engine**을 사용할 수 없게된다.
 
 > [stackoverflow: What is the function of the @EnableWebFlux annotation](https://stackoverflow.com/questions/51843344/what-is-the-function-of-the-enablewebflux-annotation?noredirect=1&lq=1)
 

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko"> 
+<head> 
+<meta charset="utf-8"> 
+<title>Index</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<link rel="stylesheet" type="text/css" href="./../../../../css/theme2.css" />
+<link rel="stylesheet" type="text/css" href="./../../../../css/github-markdown.css" />
+<link rel="stylesheet" type="text/css" href="./../../../../css/highlight.default.min.css">
+<style>
+	.markdown-body {
+		box-sizing: border-box;
+		min-width: 200px;
+		max-width: 980px;
+		margin: 0 auto;
+		padding: 45px;
+	}
+
+	@media (max-width: 767px) {
+		.markdown-body {
+			padding: 15px;
+		}
+	}
+</style>
+</head>
+<body>
+<!-- skip nav -->
+<ul id="skip">
+<li><a href="#aside" tabindex="0">메뉴 바로가기</a></li>
+<li><a href="#content">본문 바로가기</a></li>
+</ul>
+<!-- //skip nav -->
+<div id="wrap">
+	<!-- header -->
+	<div class="wrapAside">
+		<!-- <h1>Side</h1> -->
+		<div id="aside" class="aside">
+			<div class="logo">
+				<a href="/" class="logoLink">WADE</a>
+			</div>
+			<div class="menuBar">
+				<button type="button" class="buttonMenu" aria-label="메뉴 버튼">
+					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="butt" stroke-linejoin="arcs"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+				</button>
+				<div class="wrapInput">
+					<form id="searchForm">
+						<fieldset>
+							<legend>검색</legend>
+							<label for="inputSearch" class="blind">
+								검색어를 입력하세요.
+							</label>
+							<input id="inputSearch" type="text" class="inputText" title="검색어를 입력하세요"/>
+						</fieldset>
+					</form>
+				</div>
+				<button type="button" class="buttonSearch" aria-button="검색 버튼">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="butt" stroke-linejoin="arcs"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+				</button>
+			</div>
+			<div class="wrapListMenu">
+				<ul class="listMenu">
+					<li class="menu">
+						<a href="/post/akka/" class="link ellip">
+							Akka
+							<span class="count">0</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="/post/spring/" class="link ellip">
+							Spring
+							<span class="count">7</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="/post/spring/" class="link ellip">
+							Scouter
+							<span class="count">0</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="/post/netflix/zuul/" class="link ellip">
+							Netflix
+							<span class="count"></span>
+						</a>
+						<ul class="listSubMenu">
+							<li class="subMenu">
+								<a href="/post/netflix/zuul/" class="link ellip">
+									Zuul2
+									<span class="count">2</span>
+								</a>
+							</li>
+							<li class="subMenu">
+								<a href="/post/netflix/Ribbon/" class="link ellip">
+									Ribbon
+									<span class="count">0</span>
+								</a>
+							</li>
+							<li class="subMenu">
+								<a href="/post/netflix/archaius/" class="link ellip">
+									archaius
+									<span class="count">0</span>
+								</a>
+							</li>
+						</ul>
+                    </li>
+                    <li class="menu">
+						<a href="/post/reactive/reactor/" class="link ellip">
+							Reactive
+							<span class="count"></span>
+						</a>
+						<ul class="listSubMenu">
+							<li class="subMenu">
+								<a href="/post/reactive/reactor/" class="link ellip on">
+									Reactor
+									<span class="count">2</span>
+								</a>
+                            </li>
+                        </ul>
+                    </li>
+					<li class="menu">
+						<a href="/post/resilience4j/" class="link ellip">
+							Resilience4j
+							<span class="count">3</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- //header -->
+	
+	<!-- content -->
+	<div id="content" class="wrapContent">
+		<div class="mdListWrap">
+            <article class="markdown-body">
+
+<h1>Reactor FlatMap의 동작과정 (어떻게 동작 하는 가)</h1>
+<p>Reactive Operator 중에서 <strong>flatmap</strong>이라는 operator가 있다. <strong>Sub Stream을 flat하게 만들어주는 역할</strong>을 하는데, 그럼 Reactor에서 어떻게 SubStream을 flat하게 동작 시키는지 간단하게 알아본다.</p>
+<blockquote>
+<p>참고로 Reactor의 version은 3.3.1 이다.</p>
+</blockquote>
+<p><strong>flatmap</strong>의 Operator는 <code>MonoFlatMap</code>과 <code>FluxFlatMap</code>이다.
+<strong>Publisher</strong>가 <strong>Mono</strong>일 경우에는 <code>MonoFlatMap</code>이 생성되고, <strong>Flux</strong>일 경우에는 <code>FluxFlatMap</code>을 사용한다.</p>
+<pre class="hljs language-java"><code><span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MonoFlatMap</span>&lt;<span class="hljs-title">T</span>, <span class="hljs-title">R</span>&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title">InternalMonoOperator</span>&lt;<span class="hljs-title">T</span>, <span class="hljs-title">R</span>&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title">Fuseable</span> </span>{
+    <span class="hljs-keyword">final</span> Function&lt;? <span class="hljs-keyword">super</span> T, ? extends Mono&lt;? extends R&gt;&gt; mapper;
+    …
+    <span class="hljs-keyword">public</span> CoreSubscriber&lt;? <span class="hljs-keyword">super</span> T&gt; subscribeOrReturn(CoreSubscriber&lt;? <span class="hljs-keyword">super</span> R&gt; actual) {
+        <span class="hljs-keyword">if</span> (FluxFlatMap.trySubscribeScalarMap(<span class="hljs-keyword">this</span>.source, actual, <span class="hljs-keyword">this</span>.mapper, <span class="hljs-keyword">true</span>, <span class="hljs-keyword">false</span>)) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+        } <span class="hljs-keyword">else</span> {
+            MonoFlatMap.FlatMapMain&lt;T, R&gt; manager = <span class="hljs-keyword">new</span> MonoFlatMap.FlatMapMain(actual, <span class="hljs-keyword">this</span>.mapper);
+            actual.onSubscribe(manager);
+            <span class="hljs-keyword">return</span> manager;
+        }
+    }
+    …
+}
+</code></pre>
+<p>하지만 내부적으로 <code>MonoFlatMap</code>도 <code>FluxFlatMap</code>의 메소드를 사용한다.</p>
+<p>Reactor 선언시 subscribe가 호출되어 연결작업이 진행될때 호출되는 FlatMap Operator의 <code>subscribeOrReturn</code> 메소드를 살펴보면, <strong>flatmap</strong>은
+<code>FluxFlatMap.trySubscribeScalarMap</code> 메소드에 의해서 크게 <strong>두 가지로 동작</strong>한다.</p>
+<p><strong>Upstream</strong>이 MonoJust와 같은 <strong>SourceProducer일 경우</strong>와 <strong>MonoOperator(Subscriber)</strong> 일 경우다.</p>
+<h2>Upstream이 SourceProducer일 경우</h2>
+<pre class="hljs language-java"><code><span class="hljs-comment">// 아래와 같이 SourceProducer에 이어 바로 호출된 경우 </span>
+Mono.just(“test”)
+    .flatMap(d -&gt; {
+        …
+    })
+</code></pre>
+<p><code>FluxFlatMap.trySubscribeScalarMap</code> 메소드에서는 <code>Upstream</code>이 <code>Producer</code> 인지 검사한다.</p>
+<p>MonoJust와 같은 <code>Producer</code>라면 source의 <strong>value</strong>를 가져온 뒤
+<code>flatmap</code>으로 전달된 람다(mapper)로 <strong>value</strong>를 전달하여 실행 후 <strong>반환된 Mono(Sub Stream)</strong> 에 <strong>downstream을 구독</strong> 시킨다.</p>
+<blockquote>
+<p>마치 defer와 닮았다.</p>
+</blockquote>
+<p>이때 반환된 <strong>Mono(Sub Stream</strong>)에 구독될때 <strong>Sub Stream의 Subscriber 연결 작업이 시작</strong>된다. 그리고 <strong>전달 받은 downstream 에 이어서 연결 작업</strong>이 시작된다.</p>
+<p><em><strong>이렇게 stream이 하나로 이어진다.</strong></em></p>
+<h2>Upstream이 MonoOperator(Subscriber)일 경우</h2>
+<pre class="hljs language-java"><code><span class="hljs-comment">// 아래와 같이 중간에 호출된 경우 </span>
+Mono.just(“test”)
+    .map(d -&gt; {
+        …
+     }
+    .flatMap(d -&gt; {
+        …
+    })
+</code></pre>
+<p><code>FluxFlatMap.trySubscribeScalarMap</code> 메소드에서 <strong>Producer가 아닐 경우</strong></p>
+<pre class="hljs"><code>MonoFlatMap.FlatMapMain&lt;T, R&gt; manager = new MonoFlatMap.FlatMapMain(actual, this.mapper);
+actual.onSubscribe(manager);
+return manager;
+</code></pre>
+<p><strong>MonoSubsriber</strong>를 상속 받는 <code>FlatMapMain</code>을 생성하여 반환한다.</p>
+<p>이때는 <strong>아직 SubStream은 아직 생성되거나 조립되지 않은 단계</strong>이다.</p>
+<p>생성은 flatmap으로 전달된 람다(mapper)가 실행될때 생성된다.</p>
+<p>그리고 생성된 <code>FlatMapMain</code>을 <code>downstream</code>의 <code>onSubscribe</code>로 전달하여 <strong>downstream들의 Subscription을 설정</strong>한다.</p>
+<p>연결작업이 모두 끝나고 <code>Subscription</code>을 이용하여 request 후 각 <code>Subscriber</code>의 <code>onNext</code> 메소드들이 연쇄적으로 호출 되는데,</p>
+<pre class="hljs language-java"><code><span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FlatMapMain</span>&lt;<span class="hljs-title">T</span>, <span class="hljs-title">R</span>&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title">MonoSubscriber</span>&lt;<span class="hljs-title">T</span>, <span class="hljs-title">R</span>&gt; </span>{
+    ...
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onNext</span><span class="hljs-params">(T t)</span> </span>{
+        Mono m;
+        <span class="hljs-keyword">try</span> {
+            m = (Mono)Objects.requireNonNull(<span class="hljs-keyword">this</span>.mapper.apply(t), <span class="hljs-string">"The mapper returned a null Mono"</span>);
+        } <span class="hljs-keyword">catch</span> (Throwable var8) {
+        ...
+        <span class="hljs-keyword">try</span> {
+            m.subscribe(<span class="hljs-keyword">this</span>.second);
+        } <span class="hljs-keyword">catch</span> (Throwable var7) {
+        ...
+        }
+    }
+    ...
+}
+</code></pre>
+<p><code>FlatMapMain</code>의 <code>onNext</code> 호출시
+<strong>flatmap</strong>으로 전달된 <strong>람다(mapper)를 실행</strong> 후 반환된 <strong>Mono(Sub Stream)에 downstream을 구독</strong> 시킨다.</p>
+<p><strong>이때 반환된 Mono(Sub Stream)에 구독될때 Sub Stream의 Subscriber 연결 작업이 시작된다. 그리고 전달 받은 downstream 에 이어서 연결 작업이 시작된다.</strong></p>
+<pre class="hljs language-java"><code><span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InternalMonoOperator</span>&lt;<span class="hljs-title">I</span>, <span class="hljs-title">O</span>&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title">MonoOperator</span>&lt;<span class="hljs-title">I</span>, <span class="hljs-title">O</span>&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title">Scannable</span>, <span class="hljs-title">OptimizableOperator</span>&lt;<span class="hljs-title">O</span>, <span class="hljs-title">I</span>&gt; </span>{
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title">subscribe</span><span class="hljs-params">(CoreSubscriber&lt;? <span class="hljs-keyword">super</span> O&gt; subscriber)</span> </span>{
+         …
+         ((OptimizableOperator)operator).source().subscribe(subscriber);
+         …
+    }
+}
+</code></pre>
+<p>이때 호출 되는 <code>subscribe</code> 메소드는 <code>InternalMonoOperator</code>의 <code>subscribe</code> 이며 <strong>연결 작업이 끝나면 Sub Stream Publisher를 이용해 다시 실행을 이어 간다.</strong></p>
+<p><em><strong>결국, flatmap의 Sub Stream들은 Stream이 실행될 때(Subscriber가 실행될 때) 조립되고 실행된다.</strong></em></p>
+<h2>정리</h2>
+<p><code>Operator</code> 조립시 <strong>flatmap</strong>은 <strong>FlatMapMain이라는 Subsriber</strong>로 조립된다.</p>
+<p>이때는 아직 SubStream들이 생성되거나 downstream과 조립되기 전상태이다.</p>
+<p><strong>생성</strong>과 <strong>조립</strong>은 <code>Subscription</code>에 의해서 Subscriber들이 연쇄적으로 실행될 때, <strong>FlatMapMain의 onNext 호출시에 생성</strong>되고 <strong>Sub Stream이 downstream과 조립</strong>된다.</p>
+<p>그리고 조립을 마치고 연결된 Stream의 실행을 이어간다.</p>
+
+
+
+
+
+            </article>
+		</div>
+	</div>
+	<!-- //content -->
+	
+	<!-- footer -->
+	<div id="footer">
+	</div>
+	<!-- //footer -->
+</div>
+
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ko"> 
+<head> 
+<meta charset="utf-8"> 
+<title>Index</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<link rel="stylesheet" type="text/css" href="./../../../css/theme2.css" />
+<link rel="stylesheet" type="text/css" href="./../../../css/github-markdown.css" />
+<link rel="stylesheet" type="text/css" href="./../../../css/highlight.default.min.css">
+<style>
+	.markdown-body {
+		box-sizing: border-box;
+		min-width: 200px;
+		max-width: 980px;
+		margin: 0 auto;
+		padding: 45px;
+	}
+
+	@media (max-width: 767px) {
+		.markdown-body {
+			padding: 15px;
+		}
+	}
+</style>
+</head>
+<body>
+<!-- skip nav -->
+<ul id="skip">
+<li><a href="#aside" tabindex="0">메뉴 바로가기</a></li>
+<li><a href="#content">본문 바로가기</a></li>
+</ul>
+<!-- //skip nav -->
+<div id="wrap">
+	<!-- header -->
+	<div class="wrapAside">
+		<!-- <h1>Side</h1> -->
+		<div id="aside" class="aside">
+			<div class="logo">
+				<a href="/" class="logoLink">WADE</a>
+			</div>
+			<div class="menuBar">
+				<button type="button" class="buttonMenu" aria-label="메뉴 버튼">
+					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="butt" stroke-linejoin="arcs"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+				</button>
+				<div class="wrapInput">
+					<form id="searchForm">
+						<fieldset>
+							<legend>검색</legend>
+							<label for="inputSearch" class="blind">
+								검색어를 입력하세요.
+							</label>
+							<input id="inputSearch" type="text" class="inputText" title="검색어를 입력하세요"/>
+						</fieldset>
+					</form>
+				</div>
+				<button type="button" class="buttonSearch" aria-button="검색 버튼">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="butt" stroke-linejoin="arcs"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+				</button>
+			</div>
+			<div class="wrapListMenu">
+				<ul class="listMenu">
+					<li class="menu">
+						<a href="/post/akka/" class="link ellip">
+							Akka
+							<span class="count">0</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="/post/spring/" class="link ellip on">
+							Spring
+							<span class="count">7</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="/post/spring/" class="link ellip">
+							Scouter
+							<span class="count">0</span>
+						</a>
+					</li>
+					<li class="menu">
+						<a href="/post/netflix/zuul/" class="link ellip">
+							Netflix
+							<span class="count"></span>
+						</a>
+						<ul class="listSubMenu">
+							<li class="subMenu">
+								<a href="/post/netflix/zuul/" class="link ellip">
+									Zuul2
+									<span class="count">2</span>
+								</a>
+							</li>
+							<li class="subMenu">
+								<a href="/post/netflix/Ribbon/" class="link ellip">
+									Ribbon
+									<span class="count">0</span>
+								</a>
+							</li>
+							<li class="subMenu">
+								<a href="/post/netflix/archaius/" class="link ellip">
+									archaius
+									<span class="count">0</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li class="menu">
+						<a href="/post/reactive/reactor/" class="link ellip">
+							Reactive
+							<span class="count"></span>
+						</a>
+						<ul class="listSubMenu">
+							<li class="subMenu">
+								<a href="/post/reactor/" class="link ellip">
+									Reactor
+									<span class="count">2</span>
+								</a>
+                            </li>
+                        </ul>
+                    </li>
+					<li class="menu">
+						<a href="/post/resilience4j/" class="link ellip">
+							Resilience4j
+							<span class="count">3</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- //header -->
+	
+	<!-- content -->
+	<div id="content" class="wrapContent">
+		<div class="mdListWrap">
+			<article class="markdown-body">
+
+<h1>[Spring] spring-rabbit(RabbitMQ)이 Consumer를 동적으로 관리하는 방법</h1>
+<p>여기서는 내부적으로 어떻게 RabbitMQ <strong>Consumer(Thread)</strong> 를 관리하는지 살펴 본다.
+amqp의 자세한 사용법에 대해서 설명 하지는 않는다.</p>
+<p>사용법은 공식문서 참고!</p>
+<blockquote>
+<p><a href="https://docs.spring.io/spring-amqp/reference/html">공식 문서</a></p>
+</blockquote>
+<blockquote>
+<p>spring-amqp, spring-rabbit version은 2.2.2 이다.</p>
+</blockquote>
+<pre class="hljs language-java"><code><span class="hljs-meta">@Bean</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> SimpleMessageListenerContainer <span class="hljs-title">myContainer</span><span class="hljs-params">()</span></span>{
+    SimpleMessageListenerContainer container = <span class="hljs-keyword">new</span> SimpleMessageListenerContainer();
+    container.setConnectionFactory(connectionFactory());
+    container.setQueueNames(QUEUE_NAME);
+    container.setQueues(feedbackQueue());
+    container.setMessageListener(<span class="hljs-keyword">this</span>.myMQListener);  
+    <span class="hljs-comment">// add amazon sender aware listener</span>
+    container.setConcurrentConsumers(<span class="hljs-number">10</span>);
+    container.setMaxConcurrentConsumers(<span class="hljs-number">30</span>);
+    container.setAcknowledgeMode(AcknowledgeMode.MANUAL); 
+    <span class="hljs-comment">//  the listener must acknowledge all messages by calling ack</span>
+    container.setReceiveTimeout(<span class="hljs-number">3000L</span>);
+    container.setRecoveryInterval(<span class="hljs-number">3000L</span>);
+    <span class="hljs-keyword">return</span> container;
+}
+</code></pre>
+<p><code>MessageListener</code>가 실행될 <code>Container</code> 설정에서, <code>Consumer</code> 설정 중
+<strong>concurrentConsumer</strong>와 <strong>maxconcurrentConsumer</strong> 설정을 할 수가 있다.
+<strong>concurrentConsumer</strong>는 실행되는 최소 <strong>Consumer(Thread)</strong> 의 수이고
+<strong>maxconcurrentConsumer</strong>는 최대로 실행될 수 있는 Consumer(Thread)의 수 이다.</p>
+<p><code>SimpleMessageListenerContainer</code>가 Bean에 등록되어 <code>Container</code>가 구동이 되면 몇가지 셋팅을 한다.</p>
+<pre class="hljs language-java"><code><span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">int</span> <span class="hljs-title">initializeConsumers</span><span class="hljs-params">()</span> </span>{
+	…
+	<span class="hljs-keyword">this</span>.consumers = <span class="hljs-keyword">new</span> HashSet(<span class="hljs-keyword">this</span>.concurrentConsumers);
+
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-keyword">this</span>.concurrentConsumers; ++i) {
+        BlockingQueueConsumer consumer = <span class="hljs-keyword">this</span>.createBlockingQueueConsumer();
+        <span class="hljs-keyword">this</span>.consumers.add(consumer);
+        ++count;
+    }
+    …
+}
+</code></pre>
+<p>먼저 설정된 <strong>concurrentConsumers</strong> 만큼 미리 <code>BlockingQueueConsumer</code>를 미리 생성한다.</p>
+<pre class="hljs language-java"><code>Iterator var4 = <span class="hljs-keyword">this</span>.consumers.iterator();
+
+<span class="hljs-keyword">while</span>(var4.hasNext()) {
+    BlockingQueueConsumer consumer = (BlockingQueueConsumer)var4.next();
+    SimpleMessageListenerContainer.AsyncMessageProcessingConsumer processor = <span class="hljs-keyword">new</span> SimpleMessageListenerContainer.AsyncMessageProcessingConsumer(consumer);
+    processors.add(processor);
+    <span class="hljs-keyword">this</span>.getTaskExecutor().execute(processor);
+…
+}
+</code></pre>
+<p>그리고 각 <code>Consumer</code>들은 <code>SimpleMessageListenerContainer.AsyncMessageProcessingConsumer</code>로 한번 더 wrapping 된다.
+<code>BlockingQueueConsumer</code>는 <strong>실제로 RabbitMQ 서버와 통신을 담당하고 받아온 데이터를 보관하는 큐를 가지고 있다.</strong>
+<code>SimpleMessageListenerContainer.AsyncMessageProcessingConsumer</code>는 <code>BlockingQueueConsumer</code>를 <strong>동적으로 관리하기 위한 역할</strong>을 한다.</p>
+<p>그리고 각 <code>AsyncMessageProcessingConsumer</code>는 <code>SimpleAsyncTaskExecutor</code>에 의해서 실행된다.</p>
+<p><code>AsyncMessageProcessingConsumer</code>가 실행되면 <code>BlockingQueueConsumer</code>를 <strong>init</strong> 및 <strong>start</strong> 시킨다.</p>
+<p>참고로 RabbitMQ 같은 경우는 Kafka와는 다르게 <strong>Prefetch</strong> 가있다.
+<strong>설정된 prefetchCount 만큼 MQ서버에서 message를 push</strong>한다. 그리고 application에서는 Consumer의 Queue에 message들을 담아 두고 Conusmer가 하나씩 처리하게된다.</p>
+<pre class="hljs"><code>this.channel.basicQos(this.prefetchCount);
+</code></pre>
+<p><code>BlockingQueueConsumer</code>가 <strong>start</strong> 되면 <code>Consumer</code>에 할당된 <code>RabbitMQ Client Channel</code>에 설정된 <strong>prefetchCount</strong>로 <strong>basicQos</strong>가 설정된다.</p>
+<blockquote>
+<p><a href="https://velog.io/@minholee_93/RabbitMQ-Prefetch-5vk4w9gi9k">prefetch에 대해서 잘 성명된 글</a></p>
+</blockquote>
+<blockquote>
+<p><a href="https://www.rabbitmq.com/consumer-prefetch.html">Prefetch 공식문서</a></p>
+</blockquote>
+<blockquote>
+<p><a href="https://jack-vanlightly.com/blog/2017/12/4/rabbitmq-vs-kafka-part-1-messaging-topologies">rabbitmq(push model) vs kafka(pull model)</a></p>
+</blockquote>
+<pre class="hljs language-java"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> DEFAULT_PREFETCH_COUNT = <span class="hljs-number">250</span>;
+</code></pre>
+<p>참고로 default prefetch count는 250이다.</p>
+<p>그리고 가장 중요한 부분이다.</p>
+<pre class="hljs language-java"><code><span class="hljs-keyword">while</span>(SimpleMessageListenerContainer.<span class="hljs-keyword">this</span>.isActive(<span class="hljs-keyword">this</span>.consumer) || <span class="hljs-keyword">this</span>.consumer.hasDelivery() || !<span class="hljs-keyword">this</span>.consumer.cancelled()) {
+    <span class="hljs-keyword">this</span>.mainLoop();
+}
+</code></pre>
+<p>동적으로 <strong>Consumer(Thread)</strong> 를 관리하는 핵심이 <code>mainLoop</code> 메소드에 있다.
+현재 <code>BlockingQueueConsumer</code>가  Active 상태거나, Queue가 empty가 아니 거나(hasDelivery), 또는 channel에 이슈가 없다면 <code>mainLoop</code>를 계속해서 실행하게 된다.</p>
+<p><code>mainLoop</code>을 살펴보면</p>
+<pre class="hljs language-java"><code><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">mainLoop</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception </span>{
+    <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">boolean</span> receivedOk = SimpleMessageListenerContainer.<span class="hljs-keyword">this</span>.receiveAndExecute(<span class="hljs-keyword">this</span>.consumer);
+        <span class="hljs-keyword">if</span> (SimpleMessageListenerContainer.<span class="hljs-keyword">this</span>.maxConcurrentConsumers != <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">this</span>.checkAdjust(receivedOk);
+        }
+	…
+}
+</code></pre>
+<p><code>receiveAndExecute</code>는 <strong>betchSize(fetchCount)</strong> 만큼 <code>for</code>문을 돌며 message를 하나씩 처리 한다.</p>
+<p><strong>betchSize</strong> 만큼 모두 message를 받아와서 처리 했다면, <strong>true</strong>를 반환하고, 처리할 message가 없거나, <strong>betchSize</strong>보다 작다면 <strong>false</strong>를 반환 한다.</p>
+<p>그리고 이 반환된 결과에 따라서, <code>Consumer</code>를 증가 또는 중지 여부가 <code>checkAdjust</code>메소드에서 결정된다.</p>
+<blockquote>
+<p>단, maxConcurrentConsumers가 설정되있어야 한다.</p>
+</blockquote>
+<pre class="hljs language-java"><code><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">checkAdjust</span><span class="hljs-params">(<span class="hljs-keyword">boolean</span> receivedOk)</span> </span>{
+    <span class="hljs-keyword">if</span> (receivedOk) {
+        <span class="hljs-keyword">if</span> (SimpleMessageListenerContainer.<span class="hljs-keyword">this</span>.isActive(<span class="hljs-keyword">this</span>.consumer)) {
+            <span class="hljs-keyword">this</span>.consecutiveIdles = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.consecutiveMessages++ &gt; SimpleMessageListenerContainer.<span class="hljs-keyword">this</span>.consecutiveActiveTrigger) {
+                SimpleMessageListenerContainer.<span class="hljs-keyword">this</span>.considerAddingAConsumer();
+                <span class="hljs-keyword">this</span>.consecutiveMessages = <span class="hljs-number">0</span>;
+            }
+        }
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">this</span>.consecutiveMessages = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.consecutiveIdles++ &gt; SimpleMessageListenerContainer.<span class="hljs-keyword">this</span>.consecutiveIdleTrigger) {
+            SimpleMessageListenerContainer.<span class="hljs-keyword">this</span>.considerStoppingAConsumer(<span class="hljs-keyword">this</span>.consumer);
+            <span class="hljs-keyword">this</span>.consecutiveIdles = <span class="hljs-number">0</span>;
+        }
+    }
+
+}
+</code></pre>
+<p>먼저 <strong>Consumer가 증가하는 경우</strong>를 살펴 보자.</p>
+<p><code>checkAdjust</code> 메소드를 살펴보면, <strong>betchSize(prefetchCount)</strong> 만큼 모두 실행한 뒤, <code>consecutiveMessages</code>를 먼저 <code>consecutiveActiveTrigger</code> 값과 <strong>비교 후 증가</strong>시킨다.</p>
+<p>만약 <code>consecutiveActiveTrigger</code> 값보다 클 경우에는 <code>considerAddingAConsumer</code> 메소드를 통해 <strong>Consumer를 새로 추가</strong> 한다.</p>
+<blockquote>
+<p>consecutiveActiveTrigger는 기본적으로 10으로 설정되있다.</p>
+</blockquote>
+<p><strong>즉, mainLoop 메소드가 10번 이상 연이어서 실행되고, 모두 betchSize(fetchCount)만큼 계속해서 처리 했다면 Conusmer를 증가시킬 수 있는 상황으로 판단한다.</strong></p>
+<p>그리고 여기서 한번더 검사한다.</p>
+<pre class="hljs language-java"><code><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">considerAddingAConsumer</span><span class="hljs-params">()</span> </span>{
+    Object var1 = <span class="hljs-keyword">this</span>.consumersMonitor;
+    <span class="hljs-keyword">synchronized</span>(<span class="hljs-keyword">this</span>.consumersMonitor) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.consumers != <span class="hljs-keyword">null</span> &amp;&amp; <span class="hljs-keyword">this</span>.maxConcurrentConsumers != <span class="hljs-keyword">null</span> &amp;&amp; <span class="hljs-keyword">this</span>.consumers.size() &lt; <span class="hljs-keyword">this</span>.maxConcurrentConsumers) {
+            <span class="hljs-keyword">long</span> now = System.currentTimeMillis();
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.lastConsumerStarted + <span class="hljs-keyword">this</span>.startConsumerMinInterval &lt; now) {
+                <span class="hljs-keyword">this</span>.addAndStartConsumers(<span class="hljs-number">1</span>);
+                <span class="hljs-keyword">this</span>.lastConsumerStarted = now;
+            }
+        }
+
+    }
+}
+</code></pre>
+<p><code>lastConsumerStarted</code> 값에 <code>startConsumerMinInterval</code> 더한 값보다 현재시간이 더 크다면, 즉 <code>마지막 Consumer</code>를 생성한 후에도 일정 시간이상 동안 계속해서 연이어서 처리되고 있는 상황이라면, 최종적으로 Consumer가 새로 추가된다.</p>
+<blockquote>
+<p>참고로 lastConsumerStarted는 volatile로 설정되어 있기 때문에 모든 Consumer Thread와 최신 상태 값으로 공유된다. 전체 Conumser와 상태를 공유 하기 위함.
+startConsumerMinInterval는 default가 10000L(mills 이기때문에 10초)이다.</p>
+</blockquote>
+<p><em><strong>추가되는 경우를 정리하면, Conusmer는 설정된 consecutiveActiveTrigger값 이상으로 연이어서 batchSize(prefetchCount) 만큼 실행되고
+이 상태가 startConsumerMinInterval 이상 동안 유지 된다면 Consumer가 1개씩 maxConcurrentConsumers 까지 증가하게 된다.</strong></em></p>
+<p>그럼 이제 <strong>Conumser 중지 및 해제되는 경우</strong>를 살펴보자.</p>
+<p>다시 <code>checkAdjust</code> 메소드를 살펴보면, <strong>batchSize(prefetchCount)</strong> 만큼 실행되지 않으면, <code>consecutiveMessages</code>를 <strong>0</strong>으로 초기화 시키고 <code>consecutiveIdles</code>와 <code>consecutiveIdleTrigger</code>값과 <strong>비교 후 증가</strong> 시킨다. 만약 <code>consecutiveIdles</code>값이 더 크다면 <code>considerStoppingAConsumer</code> 메소드를 통해 <strong>Consumer를 중지</strong> 시킨다.</p>
+<blockquote>
+<p>consecutiveIdleTrigger는 기본적으로 10으로 설정되있다.</p>
+</blockquote>
+<p><strong>즉, mainLoop 메소드가 10번 이상 연이어서 실행되고, 모두 betchSize(prefetchCount)만큼 처리하지 않았다면 Conusmer를 중지시킬 수 있는 상황으로 판단한다.</strong></p>
+<p>그리고 역시 <code>considerStoppingAConsumer</code> 메소드에서 한번더 검사한다.</p>
+<pre class="hljs language-java"><code><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">considerStoppingAConsumer</span><span class="hljs-params">(BlockingQueueConsumer consumer)</span> </span>{
+    Object var2 = <span class="hljs-keyword">this</span>.consumersMonitor;
+    <span class="hljs-keyword">synchronized</span>(<span class="hljs-keyword">this</span>.consumersMonitor) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.consumers != <span class="hljs-keyword">null</span> &amp;&amp; <span class="hljs-keyword">this</span>.consumers.size() &gt; <span class="hljs-keyword">this</span>.concurrentConsumers) {
+            <span class="hljs-keyword">long</span> now = System.currentTimeMillis();
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.lastConsumerStopped + <span class="hljs-keyword">this</span>.stopConsumerMinInterval &lt; now) {
+                consumer.basicCancel(<span class="hljs-keyword">true</span>);
+                <span class="hljs-keyword">this</span>.consumers.remove(consumer);
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.logger.isDebugEnabled()) {
+                    <span class="hljs-keyword">this</span>.logger.debug(<span class="hljs-string">"Idle consumer terminating: "</span> + consumer);
+                }
+
+                <span class="hljs-keyword">this</span>.lastConsumerStopped = now;
+            }
+        }
+
+    }
+}
+</code></pre>
+<p>마지막으로 중지된 Conusmer 이후에 일정 시간이상 동안 계속해서 <strong>betchSize(prefetchCount)</strong> 만큼 처리 하지 않았다면 <code>Consumer</code>의 <code>basicCancel</code>를 통해 <code>Channel</code>을 종료 시키고, 이떄 무한으로 실행되던 <code>mainLoop</code>도 종료되며 <code>Thread</code>가 종료된다. 그리고 <strong>Consumer를 제거</strong>한다.</p>
+<blockquote>
+<p>참고로 lastConsumerStopped 역시 volatile로 설정되어 있기 때문에 모든 Consumer Thread와 최신 상태 값으로 공유된다. 전체 Conumser와 상태를 공유 하기 위함.</p>
+</blockquote>
+<p>그리고 소스를 보면 알겠지만, Consumer가 제거되는 경우는 현재 <code>Consumer size</code>가 설정된 <code>concurrentConsumers</code> 보다 클 경우에만 동작한다. (Consumer가 추가적으로 생성된 경우에만 동작한다.)</p>
+<p>사실 <strong>betchSize(prefetchCount) 만큼 처리 하지 못했다는 건</strong>, <strong>Queue에 Message가 많지 않다는 것</strong>이다. 그래서 최소 Consumer Size인 <strong>concurrentConsumers 수 보다 더 많이 생성된 Consumer들은 잉여자원</strong>이다.</p>
+<p><em><strong>정리하면, Conusmer는 설정된 consecutiveIdleTrigger값 이상으로 연이어서 batchSize(prefetchCount) 만큼 처리하지 않았고 이 상태가 lastConsumerStopped 기준으로 stopConsumerMinInterval 이상 동안 유지 됬다면 Consumer가 1개씩 제거 된다. (단, 현재 Consumer Size가 concurrentConsumers보다 클 경우)</strong></em></p>
+
+
+
+
+
+
+            </article>
+		</div>
+	</div>
+	<!-- //content -->
+	
+	<!-- footer -->
+	<div id="footer">
+	</div>
+	<!-- //footer -->
+</div>
+
+</body>
+</html>

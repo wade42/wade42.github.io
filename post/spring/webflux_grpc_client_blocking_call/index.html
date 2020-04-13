@@ -214,7 +214,6 @@ gRPC로 요청을 보낼 때 마다 waiting되는 Thread는 계속해서 늘어�
 <p>음… 그래서 다음 요청들도 계속해서 행이 걸렸던 거다.</p>
 <p><strong>결국 다른 쓰레드에서 <code>ThreadlessExecutor</code>의 <code>execute</code> 메소드를 실행해줘야 한다.</strong></p>
 <p>좀더 자세히 알아보자.</p>
-<p>&lt;!-- ?? 생략? --&gt;
 <code>futureUnaryCall</code> 메소드가 호출되면 <code>ClientCall</code>이 <strong>start</strong>되는데
 <code>ClientUtil.initContextAndExecuteWithFallback</code> 메소드를 통해서 <code>DefaultClientRequestContext</code>를
 <strong>init</strong> 한다.</p>

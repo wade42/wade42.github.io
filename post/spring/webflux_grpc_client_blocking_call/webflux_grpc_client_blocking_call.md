@@ -105,7 +105,6 @@ public void execute(Runnable runnable) {
 
 좀더 자세히 알아보자.
 
-<!-- ?? 생략? -->
 `futureUnaryCall` 메소드가 호출되면 `ClientCall`이 **start**되는데
 `ClientUtil.initContextAndExecuteWithFallback` 메소드를 통해서 `DefaultClientRequestContext`를 
 **init** 한다. 

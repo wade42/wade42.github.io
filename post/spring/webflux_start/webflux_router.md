@@ -100,9 +100,9 @@ RouterFunction(path(RequestPredicate), handler(HandlerFunction))
 return route(GET("/hello"), (ServerRequest r) -> {
             return ServerResponse.ok().build();
         })
-        .andRoute(GET("/c/{gameindex}/{coupon}"), linkTranslateHandler::translateCouponAndMarketLink)
-        .andRoute(GET("/c/{gameindex}/{market}/{coupon}"), linkTranslateHandler::translateCouponAndMarketLinkByMarket)
-        .andRoute(GET("/d/{target}"), linkTranslateHandler::translateDeepLink)
+        .andRoute(GET("/user/{number}"), linkTranslateHandler::translateNumberAndLink)
+        .andRoute(GET("/user/{number}/name/{name}"), linkTranslateHandler::translateNumberAndLinkByName)
+        .andRoute(GET("/target/{target}"), linkTranslateHandler::translateTargetLink)
         .andNest(path("/test"),
             route(GET("/nest1").and(accept(MediaType.APPLICATION_JSON)), r -> {
                     System.out.println("tmp");
@@ -179,9 +179,9 @@ static final class SameComposedRouterFunction<T extends ServerResponse> extends 
 return route()
     .path("/c", b ->
         b.nest(accept(MediaType.APPLICATION_JSON), b2 ->
-                b2.GET("/{gameindex}/{coupon}", linkTranslateHandler::translateCouponAndMarketLink)
-                .GET("/{gameindex}/{market}/{coupon}", linkTranslateHandler::translateCouponAndMarketLinkByMarket)
-                .GET("/test/{gameindex}/{market}/{coupon}", linkTranslateHandler::translateCouponAndMarketLinkByMarket)
+                b2.GET("/user/{number}", linkTranslateHandler::translateNumberAndLink)
+                .GET("/user/{number}/name/{name}", linkTranslateHandler::translateNumberAndLinkByName)
+                .GET("/test/user/{number}/name/{name}", linkTranslateHandler::translateNumberAndLinkByName)
                 .before(request -> {
                     // uuid 발급 (header에 없으면)
                     log.info("before inner");
@@ -192,7 +192,7 @@ return route()
 
         )
     )
-    .GET("/d/{target}", linkTranslateHandler::translateDeepLink)
+    .GET("/target/{target}", linkTranslateHandler::translateTargetLink)
     .after((request, response) -> {
         System.out.println(request.headers());
         System.out.println(request.headers().toString());

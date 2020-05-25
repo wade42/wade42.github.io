@@ -224,9 +224,9 @@ Functional Model로 작성시 path와 mapping 되는 Handler 인터페이스는 
 <pre class="hljs language-java"><code><span class="hljs-keyword">return</span> route(GET(<span class="hljs-string">"/hello"</span>), (ServerRequest r) -&gt; {
            <span class="hljs-keyword">return</span> ServerResponse.ok().build();
        })
-       .andRoute(GET(<span class="hljs-string">"/c/{gameindex}/{coupon}"</span>), linkTranslateHandler::translateCouponAndMarketLink)
-       .andRoute(GET(<span class="hljs-string">"/c/{gameindex}/{market}/{coupon}"</span>), linkTranslateHandler::translateCouponAndMarketLinkByMarket)
-       .andRoute(GET(<span class="hljs-string">"/d/{target}"</span>), linkTranslateHandler::translateDeepLink)
+       .andRoute(GET(<span class="hljs-string">"/user/{number}"</span>), linkTranslateHandler::translateNumberAndLink)
+       .andRoute(GET(<span class="hljs-string">"/user/{number}/name/{name}"</span>), linkTranslateHandler::translateNumberAndLinkByName)
+       .andRoute(GET(<span class="hljs-string">"/target/{target}"</span>), linkTranslateHandler::translateTargetLink)
        .andNest(path(<span class="hljs-string">"/test"</span>),
            route(GET(<span class="hljs-string">"/nest1"</span>).and(accept(MediaType.APPLICATION_JSON)), r -&gt; {
                    System.out.println(<span class="hljs-string">"tmp"</span>);
@@ -291,9 +291,9 @@ Functional Model로 작성시 path와 mapping 되는 Handler 인터페이스는 
 <pre class="hljs language-java"><code><span class="hljs-keyword">return</span> route()
     .path(<span class="hljs-string">"/c"</span>, b -&gt;
         b.nest(accept(MediaType.APPLICATION_JSON), b2 -&gt;
-                b2.GET(<span class="hljs-string">"/{gameindex}/{coupon}"</span>, linkTranslateHandler::translateCouponAndMarketLink)
-                .GET(<span class="hljs-string">"/{gameindex}/{market}/{coupon}"</span>, linkTranslateHandler::translateCouponAndMarketLinkByMarket)
-                .GET(<span class="hljs-string">"/test/{gameindex}/{market}/{coupon}"</span>, linkTranslateHandler::translateCouponAndMarketLinkByMarket)
+                b2.GET(<span class="hljs-string">"/user/{number}"</span>, linkTranslateHandler::translateNumberAndLink)
+                .GET(<span class="hljs-string">"/user/{number}/name/{name}"</span>, linkTranslateHandler::translateNumberAndLinkByName)
+                .GET(<span class="hljs-string">"/test/{number}/name/{name}"</span>, linkTranslateHandler::translateNumberAndLinkByName)
                 .before(request -&gt; {
                     <span class="hljs-comment">// uuid 발급 (header에 없으면)</span>
                     log.info(<span class="hljs-string">"before inner"</span>);
@@ -304,7 +304,7 @@ Functional Model로 작성시 path와 mapping 되는 Handler 인터페이스는 
 
         )
     )
-    .GET(<span class="hljs-string">"/d/{target}"</span>, linkTranslateHandler::translateDeepLink)
+    .GET(<span class="hljs-string">"/target/{target}"</span>, linkTranslateHandler::translateTargetLink)
     .after((request, response) -&gt; {
         System.out.println(request.headers());
         System.out.println(request.headers().toString());
